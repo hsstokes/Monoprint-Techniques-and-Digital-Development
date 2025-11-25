@@ -719,6 +719,110 @@ p {
   color: white;
 }
 
+/* QUIZ STYLES */
+.quiz-container {
+  background-color: white;
+  margin: 30px auto;
+  padding: 0;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  overflow: hidden;
+  border: 3px solid var(--inclass);
+}
+
+.quiz-header {
+  background-color: var(--inclass);
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+.quiz-header h3 {
+  margin: 0;
+  color: white;
+}
+
+.progress {
+  text-align: center;
+  color: var(--inclass);
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.question {
+  text-align: center;
+  color: var(--inclass);
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding: 0 15px;
+}
+
+.step {
+  background-color: white;
+  margin: 10px;
+  padding: 12px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #ccc;
+}
+
+.step:hover {
+  background-color: #f5f5f5;
+  border-color: var(--inclass);
+}
+
+.step.selected {
+  background-color: var(--inclass-light);
+  border-color: var(--inclass);
+  color: var(--inclass);
+}
+
+.step.correct {
+  background-color: #d4edda;
+  border-color: #28a745;
+  color: #155724;
+}
+
+.step.incorrect {
+  background-color: #f8d7da;
+  border-color: #dc3545;
+  color: #721c24;
+}
+
+.buttons-container {
+  text-align: center;
+  margin: 20px 0;
+  padding: 0 15px 15px;
+}
+
+.quiz-btn {
+  background-color: var(--inclass);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+  margin: 5px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.quiz-btn:hover {
+  background-color: #086666;
+  transform: translateY(-2px);
+}
+
+#score {
+  text-align: center;
+  font-weight: bold;
+  margin: 15px 0;
+  padding: 15px;
+  border-top: 2px solid #f0f0f0;
+  color: var(--inclass);
+}
+
 @media (max-width: 768px) {
   .workshop-content {
     grid-template-columns: 1fr;
@@ -1232,9 +1336,30 @@ p {
         </div>
       </div>
 
-      <a href="https://artslondon.padlet.org/hstokes12/term-2-week-3-th2s3ir6sfec7ukb" target="_blank" style="display: block; text-align: center; margin: 30px auto; padding: 15px 30px; background-color: var(--inclass); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: all 0.3s ease; font-size: 1.2rem; width: fit-content; box-shadow: 0 5px 15px rgba(10, 128, 128, 0.3);">
+      <a href="https://artslondon.padlet.org/username/monoprint-digital-development" target="_blank" style="display: block; text-align: center; margin: 30px auto; padding: 15px 30px; background-color: var(--inclass); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: all 0.3s ease; font-size: 1.2rem; width: fit-content; box-shadow: 0 5px 15px rgba(10, 128, 128, 0.3);">
         Submit to Padlet Board
       </a>
+    </div>
+  </div>
+  
+  <!-- NEW: QUIZ SECTION -->
+  <div class="section-banner inclass-banner">
+    TEST YOUR KNOWLEDGE: Monoprint Process Quiz
+  </div>
+  
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <h3>Photoshop Mask Creation Steps Quiz</h3>
+    </div>
+    <div id="quizContent" style="padding: 20px;">
+      <div class="progress" id="progress">Question 1/7</div>
+      <div class="question" id="question"></div>
+      <div id="options"></div>
+      <div class="buttons-container">
+        <button class="quiz-btn" onclick="checkAnswer()">Submit Answer</button>
+        <button class="quiz-btn" onclick="resetQuiz()">Start Over</button>
+      </div>
+      <div id="score"></div>
     </div>
   </div>
 
@@ -1271,7 +1396,193 @@ document.addEventListener('DOMContentLoaded', () => {
       modal.style.display = "none";
     }
   });
+  
+  // Start the quiz
+  displayQuestion();
 });
+
+// Quiz Functionality
+const questions = [
+  {
+    question: "What's the first step when creating a monoprint in the physical world?",
+    options: [
+      "Draw directly on white paper",
+      "Color one side of tracing paper with oil pastels",
+      "Scan your objects",
+      "Apply Threshold adjustment"
+    ],
+    correct: 1
+  },
+  {
+    question: "Which side of the tracing paper should face down during the monoprint process?",
+    options: [
+      "The blank side",
+      "The side with oil pastels",
+      "It doesn't matter",
+      "The textured side"
+    ],
+    correct: 1
+  },
+  {
+    question: "What's the first step in Photoshop when digitizing your monoprint?",
+    options: [
+      "Add a layer mask",
+      "Delete white areas",
+      "Go to Image → Adjustments → Threshold",
+      "Change blend mode to Multiply"
+    ],
+    correct: 2
+  },
+  {
+    question: "After applying Threshold, what tool do you use to select white areas?",
+    options: [
+      "Lasso Tool",
+      "Magic Wand Tool",
+      "Brush Tool",
+      "Eraser Tool"
+    ],
+    correct: 1
+  },
+  {
+    question: "What do you do with the white areas once selected?",
+    options: [
+      "Press Delete to remove them",
+      "Apply a gradient",
+      "Colorize them",
+      "Add a pattern fill"
+    ],
+    correct: 0
+  },
+  {
+    question: "What does painting with black on a layer mask do?",
+    options: [
+      "Makes areas more colorful",
+      "Adds texture",
+      "Makes areas visible",
+      "Hides areas of the image"
+    ],
+    correct: 3
+  },
+  {
+    question: "Which blend mode would create interesting effects with your monoprint texture?",
+    options: [
+      "Normal",
+      "Overlay",
+      "Luminosity",
+      "Difference"
+    ],
+    correct: 1
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let selectedOption = null;
+
+function playSound(isCorrect) {
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(isCorrect ? 800 : 400, audioContext.currentTime);
+    
+    gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+  } catch (e) {
+    console.log("Audio feedback not available");
+  }
+}
+
+function displayQuestion() {
+  const questionEl = document.getElementById('question');
+  const optionsEl = document.getElementById('options');
+  const progressEl = document.getElementById('progress');
+  
+  questionEl.textContent = questions[currentQuestion].question;
+  progressEl.textContent = `Question ${currentQuestion + 1}/${questions.length}`;
+  optionsEl.innerHTML = '';
+  
+  questions[currentQuestion].options.forEach((option, index) => {
+    const div = document.createElement('div');
+    div.className = 'step';
+    div.textContent = option;
+    div.onclick = () => selectOption(index, div);
+    optionsEl.appendChild(div);
+  });
+}
+
+function selectOption(index, element) {
+  const options = document.getElementsByClassName('step');
+  for (let option of options) {
+    option.classList.remove('selected');
+  }
+  element.classList.add('selected');
+  selectedOption = index;
+}
+
+function checkAnswer() {
+  if (selectedOption === null) {
+    alert('Please select an answer!');
+    return;
+  }
+
+  const options = document.getElementsByClassName('step');
+  const correct = questions[currentQuestion].correct;
+
+  options[selectedOption].classList.remove('selected');
+  if (selectedOption === correct) {
+    options[selectedOption].classList.add('correct');
+    score++;
+    playSound(true);
+  } else {
+    options[selectedOption].classList.add('incorrect');
+    options[correct].classList.add('correct');
+    playSound(false);
+  }
+
+  setTimeout(() => {
+    selectedOption = null;
+    currentQuestion++;
+    
+    if (currentQuestion < questions.length) {
+      displayQuestion();
+    } else {
+      showResults();
+    }
+  }, 1500);
+}
+
+function showResults() {
+  const container = document.getElementById('options');
+  const questionEl = document.getElementById('question');
+  const progressEl = document.getElementById('progress');
+  
+  questionEl.textContent = `Quiz Complete!`;
+  progressEl.textContent = `Final Score: ${score}/${questions.length}`;
+  container.innerHTML = `
+    <div class="step" style="text-align: center;">
+      You got ${score} out of ${questions.length} questions correct!
+      ${score === questions.length ? '🎉 Perfect Score! You\'re ready to create amazing monoprints!' : 
+       score >= questions.length/2 ? 'Good job! Keep practicing your monoprint skills.' : 
+       'Keep learning! Review the monoprint process and try again.'}
+    </div>
+  `;
+}
+
+function resetQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  selectedOption = null;
+  displayQuestion();
+}
 </script>
 
 </body>
