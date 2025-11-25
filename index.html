@@ -956,8 +956,7 @@ p {
           <div class="step-content">
             <ul>
               <li>Take tracing paper</li>
-              <li>Cover one side with oil pastels</li>
-              <li>Use bright colors</li>
+              <li>Cover one side with black oil pastel</li>
             </ul>
             <img class="step-image" src="step1-oil-pastels.jpg" alt="Applying oil pastels to tracing paper" onclick="openModal(this.src)">
           </div>
@@ -968,8 +967,8 @@ p {
           <div class="step-title" style="color: var(--homework);">Add Objects for Texture</div>
           <div class="step-content">
             <ul>
-              <li>Place string, leaves, or coins on plain paper</li>
-              <li>Put your colored tracing paper on top (pastel side down)</li>
+              <li>Place relavant stencil materials related to your project on paper</li>
+              <li>Put your tracing paper on top (pastel side down)</li>
             </ul>
             <img class="step-image" src="step2-objects.jpg" alt="Placing objects under tracing paper" onclick="openModal(this.src)">
           </div>
@@ -1133,7 +1132,6 @@ p {
             <li>Your completed monoprints</li>
             <li>Access to scanner or camera</li>
             <li>Computer with Photoshop installed</li>
-            <li>USB drive (optional for backup)</li>
           </ul>
         </div>
       </div>
@@ -1161,7 +1159,7 @@ p {
         <div class="technique-header" style="background: var(--inclass-light); color: var(--inclass);">Setting Up in Photoshop</div>
         <div class="technique-content">
           <ul>
-            <li>Open your scanned image</li>
+            <li>Open your scanned image in a A3 lanscape page in Photoshop</li>
             <li>Make sure image is at least 300dpi</li>
             <li>Save a copy to keep your original safe</li>
           </ul>
@@ -1196,25 +1194,27 @@ p {
           <div class="step-title" style="color: var(--inclass);">Select White Areas</div>
           <div class="step-content">
             <ul>
-              <li>Click Magic Wand Tool (<span class="shortcut">W</span>)</li>
-              <li>Click on a white area</li>
-              <li>Hold <span class="shortcut">Shift</span> to add more white areas</li>
+             <li>Click the Rectangular Marquee Tool (<span class="shortcut">M</span>)</li>
+             <li>Draw a selection around a white area in your threshold image</li>
+             <li>Go to <span class="menu-path">Select → Similar</span> to automatically select all similar white areas</li>
+             <li>This helps to select all white areas with similar brightness values across the entire image</li>
             </ul>
-            <img class="step-image" src="select-white-areas.jpg" alt="Selecting white areas with Magic Wand" onclick="openModal(this.src)">
-          </div>
+         <img class="step-image" src="select-white-areas.jpg" alt="Selecting white areas with Rectangular Marquee and Select Similar" onclick="openModal(this.src)">
         </div>
+       </div>
         
-        <div class="step">
-          <div class="step-number" style="background: var(--inclass);">3</div>
-          <div class="step-title" style="color: var(--inclass);">Remove White Areas</div>
-          <div class="step-content">
-            <ul>
-              <li>With white areas selected, press <span class="shortcut">Delete</span></li>
-              <li>Only the black texture remains</li>
-            </ul>
-            <img class="step-image" src="delete-white.jpg" alt="White areas removed" onclick="openModal(this.src)">
-          </div>
-        </div>
+       <div class="step">
+         <div class="step-number" style="background: var(--inclass);">3</div>
+         <div class="step-title" style="color: var(--inclass);">Remove White Areas</div>
+         <div class="step-content">
+          <ul>
+           <li>With all white areas now selected, press <span class="shortcut">Delete</span></li>
+           <li>This precisely removes all white areas, leaving only the black texture</li>
+           <li>If some white areas remain, you can repeat the process, selecting a remaining white area and using Select → Similar again</li>
+          </ul>
+        <img class="step-image" src="delete-white.jpg" alt="White areas removed using Select Similar method" onclick="openModal(this.src)">
+       </div>
+      </div>
         
         <div class="step">
           <div class="step-number" style="background: var(--inclass);">4</div>
