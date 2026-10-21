@@ -1,384 +1,656 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Monoprint · Handmade to Digital</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
   --ink: #1a1a1a;
   --paper: #f2ede8;
-  --teal: #0a7a7a;
-  --teal-light: #e0f0f0;
-  --pink: #ea37a3;
-  --pink-light: #fdf1f5;
-  --purple: #6c35c9;
-  --purple-light: #f3eeff;
-  --blue: #2563a8;
-  --blue-light: #eef4ff;
-  --gold: #c87900;
-  --gold-light: #fff8e6;
-  --warm-mid: #d4cfc8;
   --grid: #ddd8d2;
+  --teal: #0a7a7a;
+  --teal-light: #e3f2f2;
+  --pink: #ea37a3;
+  --pink-light: #fde8f4;
+  --purple: #6c35c9;
+  --purple-light: #efe8fb;
+  --blue: #2563a8;
+  --blue-light: #e6eef8;
+  --gold: #c87900;
+  --gold-light: #fbf0dc;
+  --green: #1f7a3d;
+  --green-light: #e4f4e9;
+  --warm-mid: #d4cfc8;
   --concrete: #8a8a8a;
+  --white: #ffffff;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
   background-color: var(--paper);
   background-image:
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 40px 40px;
-  color: var(--ink);
-  font-size: 14px;
-  line-height: 1.7;
-}
-body::before {
-  content: '';
-  position: fixed;
-  top: -10%; left: 48%;
-  width: 4px; height: 120vh;
-  background: rgba(255,255,255,0.6);
-  transform: rotate(12deg);
-  pointer-events: none;
-  z-index: 0;
+  background-attachment: fixed;
+  padding: 24px 16px 40px;
 }
 
-.container { max-width: 1060px; margin: 0 auto; padding: 36px 28px 60px; position: relative; z-index: 1; }
-
-/* HEADER */
-.site-header {
-  display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 16px;
-  border-bottom: 3px solid var(--ink); padding-bottom: 18px; margin-bottom: 10px;
-}
-.header-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
-.site-header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 4vw, 2.8rem); font-weight: 400; line-height: 1.1; }
-.site-header h1 em { color: var(--teal); font-style: italic; }
-.header-meta { font-family: 'Space Mono', monospace; font-size: 0.68rem; text-align: right; color: var(--concrete); line-height: 1.8; }
-
-/* PROGRESS */
-.progress-wrap { height: 6px; background: var(--warm-mid); margin: 16px 0 18px; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--pink), var(--teal)); transition: width 0.4s ease; }
-
-/* NAV GRID */
-.nav-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 7px; margin-bottom: 28px; }
-@media (max-width: 900px) { .nav-grid { grid-template-columns: repeat(5, 1fr); } }
-@media (max-width: 560px) { .nav-grid { grid-template-columns: repeat(3, 1fr); } }
-.nav-block {
-  border: 2px solid var(--warm-mid); background: white; padding: 10px 4px;
-  text-align: center; cursor: pointer; transition: all 0.2s;
-  font-family: 'Space Mono', monospace; border-radius: 3px; min-height: 64px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-}
-.nav-block:hover { border-color: var(--teal); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
-.nav-block.active { background: var(--ink); color: white; border-color: var(--ink); }
-.nav-icon { font-size: 1.1rem; }
-.nav-label { font-weight: 700; font-size: 0.64rem; }
-.nav-sub { color: var(--concrete); font-size: 0.54rem; }
-.nav-block.active .nav-sub { color: var(--warm-mid); }
-
-/* SECTIONS */
-.section { display: none; }
-.section.active { display: block; animation: fadeUp 0.35s ease; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-/* TYPOGRAPHY */
-h2 {
-  font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400;
-  margin: 1.8rem 0 0.8rem; display: flex; align-items: center; gap: 10px;
-}
-h2::before { content: ''; display: inline-block; width: 5px; height: 22px; background: var(--pink); flex-shrink: 0; }
-h3 { font-family: 'Space Mono', monospace; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal); margin: 1rem 0 0.5rem; }
-p { margin-bottom: 0.9em; font-size: 0.88rem; line-height: 1.8; }
+.page { max-width: 1000px; margin: 0 auto; }
 a { color: var(--teal); font-weight: 600; }
 a:hover { color: var(--pink); }
-ul, ol { margin-left: 18px; margin-bottom: 0.8em; }
-li { font-size: 0.86rem; margin-bottom: 5px; line-height: 1.7; }
 
-.diagonal-rule { height: 3px; background: linear-gradient(90deg, var(--pink), var(--teal)); margin: 24px 0; transform: skewX(-15deg); }
-
-/* BANNERS */
-.section-banner {
-  padding: 12px 18px; margin-bottom: 22px;
-  font-family: 'Space Mono', monospace; font-size: 0.78rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  border-left: 6px solid currentColor; border-radius: 0 4px 4px 0;
+/* ---------- Header ---------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-bottom: 18px;
+  border-bottom: 3px solid var(--ink);
+  margin-bottom: 18px;
 }
-.b-teal   { background: var(--teal-light);   color: var(--teal);   }
-.b-pink   { background: var(--pink-light);   color: var(--pink);   }
-.b-purple { background: var(--purple-light); color: var(--purple); }
-.b-blue   { background: var(--blue-light);   color: var(--blue);   }
-.b-gold   { background: var(--gold-light);   color: var(--gold);   }
+.eyebrow {
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--concrete);
+  margin-bottom: 8px;
+}
+h1 {
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
+  font-size: clamp(2.1rem, 6vw, 3.6rem);
+  line-height: 1.05;
+}
+h1 em { color: var(--teal); font-style: italic; display: block; }
+.meta {
+  font-family: "Space Mono", monospace;
+  font-size: 0.8rem;
+  text-align: right;
+  color: var(--concrete);
+}
+.meta strong { color: var(--ink); display: block; font-size: 0.95rem; }
+@media (max-width: 600px) { .meta { text-align: left; } }
 
-/* BOXES */
-.info-box { border-left: 4px solid var(--teal); background: var(--teal-light); padding: 10px 14px; border-radius: 0 4px 4px 0; margin: 12px 0; font-size: 0.86rem; }
-.info-box.pink   { background: var(--pink-light);   border-color: var(--pink);   }
-.info-box.purple { background: var(--purple-light); border-color: var(--purple); }
-.info-box.green  { background: #e8f5e9; border-color: #4caf50; }
-.info-box strong { color: var(--teal); }
-.info-box.pink strong   { color: var(--pink);   }
-.info-box.purple strong { color: var(--purple); }
-.info-box ul { margin-left: 14px; margin-top: 5px; margin-bottom: 0; }
-.notice { background: rgba(234,55,163,0.08); border-left: 4px solid var(--pink); padding: 10px 14px; margin: 12px 0; border-radius: 0 4px 4px 0; font-size: 0.84rem; }
-.notice strong { color: var(--pink); }
-.tip-box { background: #fffbea; border: 2px solid #e6c200; border-radius: 4px; padding: 12px 16px; margin: 12px 0; font-size: 0.84rem; }
-.tip-box h4 { color: #a08800; font-family: 'Space Mono', monospace; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 6px; }
-.tip-box ul { margin-left: 14px; margin-bottom: 0; }
-.key { display: inline-block; background: #f2f2f2; border: 1px solid #ccc; border-radius: 3px; padding: 1px 6px; font-family: monospace; font-size: 0.8em; margin: 0 2px; }
+/* ---------- Timing strip ---------- */
+.timing-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.t-badge {
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 2px solid var(--c);
+  background: var(--cl);
+  color: var(--c);
+}
 
-/* ACCORDION STEPS */
-.steps-list { margin: 1rem 0; }
-.step-item { background: white; border-radius: 4px; margin-bottom: 8px; border: 2px solid var(--warm-mid); overflow: hidden; }
-.step-header { display: flex; align-items: center; gap: 12px; padding: 12px 14px; cursor: pointer; user-select: none; transition: background 0.2s; }
-.step-header:hover { background: var(--teal-light); }
-.step-num { width: 28px; height: 28px; background: var(--teal); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.82rem; flex-shrink: 0; }
-.step-num.pink { background: var(--pink); }
-.step-num.purple { background: var(--purple); }
-.step-title-text { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--teal); font-size: 0.84rem; flex: 1; }
-.step-toggle { font-size: 0.75rem; color: var(--concrete); }
-.step-body { padding: 0 14px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.2s; }
-.step-body.open { padding: 0 14px 14px; max-height: 2400px; }
-.step-body ul, .step-body ol { margin-left: 16px; }
-.step-body li { font-size: 0.84rem; margin-bottom: 4px; line-height: 1.6; }
+/* ---------- Progress + nav ---------- */
+.progress-track { height: 8px; background: var(--warm-mid); margin-bottom: 16px; overflow: hidden; }
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--pink), var(--teal));
+  transition: width 0.3s ease;
+}
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 30px;
+}
+.nav-block {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-top: 6px solid var(--c);
+  padding: 12px 10px;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.nav-block:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink); }
+.nav-block .n {
+  font-family: "Space Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--c);
+  font-weight: 700;
+  display: block;
+}
+.nav-block .t { font-size: 0.9rem; font-weight: 600; display: block; line-height: 1.3; }
+.nav-block.active { background: var(--c); color: var(--white); box-shadow: 3px 3px 0 var(--ink); }
+.nav-block.active .n { color: var(--white); }
 
-/* VIDEO */
-.vid-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 2px solid var(--ink); border-radius: 4px; margin: 12px 0; }
-.vid-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+/* ---------- Sections ---------- */
+.content-section { display: none; }
+.content-section.active { display: block; animation: fade 0.3s ease; }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 
-/* OVERVIEW CARDS */
-.overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 1.2rem 0; }
-.ov-card { border: 2px solid; border-radius: 3px; padding: 14px 10px; text-align: center; cursor: pointer; transition: all 0.2s; }
-.ov-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
-.ov-card .ov-icon { font-size: 1.6rem; margin-bottom: 6px; }
-.ov-card h4 { font-family: 'Space Mono', monospace; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-.ov-card p { font-size: 0.74rem; margin: 0; }
-.ov-teal   { background: var(--teal-light);   border-color: var(--teal);   color: var(--teal);   }
-.ov-pink   { background: var(--pink-light);   border-color: var(--pink);   color: var(--pink);   }
-.ov-purple { background: var(--purple-light); border-color: var(--purple); color: var(--purple); }
-.ov-blue   { background: var(--blue-light);   border-color: var(--blue);   color: var(--blue);   }
-.ov-gold   { background: var(--gold-light);   border-color: var(--gold);   color: var(--gold);   }
+.section-banner {
+  background: var(--c);
+  color: var(--white);
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 14px 20px;
+  margin-bottom: 18px;
+}
+h2 {
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 30px 0 10px;
+}
+h2::before { content: ""; width: 5px; height: 28px; background: var(--pink); flex-shrink: 0; }
+.intro { margin-bottom: 14px; max-width: 70ch; }
+.muted { color: var(--concrete); font-size: 0.9rem; }
 
-/* TOOL CARDS */
-.tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 1rem 0; }
-.tool-card { background: white; border: 2px solid var(--warm-mid); border-top: 4px solid var(--teal); border-radius: 3px; padding: 14px; }
-.tool-card.pink   { border-top-color: var(--pink); }
-.tool-card.purple { border-top-color: var(--purple); }
-.tool-card h3 { margin: 0 0 6px; }
-.tool-card.pink h3   { color: var(--pink); }
-.tool-card.purple h3 { color: var(--purple); }
-.tool-card .use { font-size: 0.76rem; color: var(--concrete); margin: 0 0 6px; }
-.tool-card ol, .tool-card ul { margin-left: 16px; margin-bottom: 0; }
-.tool-card li { font-size: 0.8rem; margin-bottom: 3px; }
+.rule {
+  height: 6px;
+  margin: 36px 0;
+  background: linear-gradient(90deg, var(--pink), var(--teal));
+  transform: skewX(-15deg);
+}
 
-/* INSPIRATION */
-.eg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 1rem 0; }
-.eg-card { background: white; border: 2px solid var(--warm-mid); border-radius: 3px; overflow: hidden; cursor: zoom-in; transition: all 0.2s; }
-.eg-card:hover { border-color: var(--pink); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
-.eg-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
-.eg-cap { padding: 7px 10px; font-family: 'Space Mono', monospace; font-size: 0.66rem; background: var(--ink); color: white; }
+/* ---------- Info boxes ---------- */
+.box-note {
+  border-left: 5px solid var(--bc, var(--c));
+  background: var(--bl, var(--cl));
+  padding: 12px 16px;
+  margin: 14px 0;
+}
+.box-note strong { color: var(--bc, var(--c)); }
+.box-note ul { list-style: none; margin-top: 6px; }
+.box-note li { padding-left: 18px; position: relative; margin-bottom: 4px; }
+.box-note li::before { content: "→"; position: absolute; left: 0; color: var(--bc, var(--c)); }
+.box-note.pink { --bc: var(--pink); --bl: var(--pink-light); }
+.box-note.gold { --bc: var(--gold); --bl: var(--gold-light); }
+.box-note.green { --bc: var(--green); --bl: var(--green-light); }
 
-/* BLEND MODES */
-.blend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 10px 0; }
-.blend { background: white; border: 2px solid var(--warm-mid); border-radius: 3px; padding: 10px 12px; }
-.blend b { font-family: 'Space Mono', monospace; font-size: 0.74rem; color: var(--purple); display: block; }
-.blend span { font-size: 0.76rem; color: var(--concrete); }
+/* ---------- Cards ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+.card {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  padding: 16px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.card .label {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--cc, var(--teal));
+  margin-bottom: 6px;
+}
+button.card {
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-top: 6px solid var(--cc);
+  transition: transform 0.15s ease;
+}
+button.card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+.card .icon { font-size: 1.5rem; display: block; margin-bottom: 4px; }
 
-/* FONT GUIDE */
-.font-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1rem 0; }
-@media (max-width: 560px) { .font-grid { grid-template-columns: 1fr; } }
-.font-box { border: 2px solid; border-radius: 3px; padding: 14px; }
-.font-box.good { background: #e8f5e9; border-color: #4caf50; }
-.font-box.rules { background: var(--teal-light); border-color: var(--teal); }
-.font-box h3 { font-size: 0.78rem; margin: 0 0 8px; }
-.font-box.good h3 { color: #2e7d32; }
-.font-sample { background: white; border-radius: 2px; padding: 7px 10px; margin-bottom: 5px; font-size: 0.86rem; border-left: 3px solid #4caf50; }
-.font-box ul { margin-left: 14px; margin-bottom: 0; }
+/* Artist cards */
+.artist-card { display: block; text-decoration: none; color: inherit; font-weight: 400; padding: 0; overflow: hidden; }
+.artist-card:hover { color: inherit; transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+.artist-img {
+  height: 150px;
+  background: var(--pink-light);
+  border-bottom: 2px solid var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  overflow: hidden;
+}
+.artist-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.artist-body { padding: 12px 14px; }
+.artist-body .label { color: var(--pink); margin-bottom: 0; }
+.artist-body span { font-size: 0.85rem; color: var(--concrete); }
 
-/* REFLECTION */
-.reflection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1rem 0; }
-@media (max-width: 560px) { .reflection-grid { grid-template-columns: 1fr; } }
-.reflection-card { background: white; border: 2px solid var(--blue); border-top: 4px solid var(--blue); border-radius: 3px; padding: 12px; }
-.reflection-card h3 { color: var(--blue); font-size: 0.76rem; margin-top: 0; }
-.reflection-card p { font-size: 0.76rem; color: var(--concrete); margin: 0; }
+/* ---------- Key + menu badges ---------- */
+.key {
+  display: inline-block;
+  font-family: "Space Mono", monospace;
+  font-size: 0.82em;
+  font-weight: 700;
+  background: var(--white);
+  border: 1.5px solid var(--ink);
+  border-bottom-width: 3px;
+  padding: 0 7px;
+  margin: 0 1px;
+  white-space: nowrap;
+}
+.menu {
+  font-family: "Space Mono", monospace;
+  font-size: 0.85em;
+  background: var(--teal-light);
+  padding: 1px 6px;
+}
 
-/* SUBMIT */
-.submit-box { background: white; border: 3px dashed var(--teal); border-radius: 4px; padding: 22px; text-align: center; margin: 1.2rem 0; }
-.submit-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 1.2rem 0; }
-.submit-item { background: var(--teal-light); border: 1px solid var(--teal); border-radius: 3px; padding: 12px; text-align: left; }
-.submit-item:nth-child(2) { background: var(--pink-light);   border-color: var(--pink);   }
-.submit-item:nth-child(3) { background: var(--blue-light);   border-color: var(--blue);   }
-.submit-item h4 { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--teal); margin-bottom: 3px; }
-.submit-item:nth-child(2) h4 { color: var(--pink); }
-.submit-item:nth-child(3) h4 { color: var(--blue); }
-.submit-item p { font-size: 0.72rem; color: var(--concrete); margin: 0; }
-.cta-btn { display: inline-block; color: white; padding: 12px 24px; border-radius: 3px; text-decoration: none; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.2s; }
-.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); color: white; }
-.cta-teal { background: var(--teal); }
-.cta-blue { background: var(--blue); }
+/* ---------- Accordion ---------- */
+.accordion { display: grid; gap: 10px; }
+.acc { background: var(--white); border: 2px solid var(--ink); }
+.acc-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: none;
+  border: none;
+  padding: 12px 14px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.acc-num {
+  width: 38px; height: 38px;
+  flex-shrink: 0;
+  background: var(--c);
+  color: var(--white);
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.acc-title { flex: 1; font-family: "Space Mono", monospace; font-weight: 700; font-size: 0.95rem; }
+.acc-arrow { font-size: 1.1rem; transition: transform 0.2s ease; }
+.acc.open .acc-arrow { transform: rotate(90deg); }
+.acc-body { display: none; padding: 4px 18px 18px 66px; }
+.acc.open .acc-body { display: block; }
+@media (max-width: 600px) { .acc-body { padding: 4px 14px 16px; } }
+.acc-body ul { list-style: none; }
+.acc-body ul li { padding-left: 18px; position: relative; margin-bottom: 4px; }
+.acc-body ul li::before { content: "→"; position: absolute; left: 0; color: var(--c); }
+.acc-body p { margin-bottom: 8px; }
 
-/* CHECKLIST */
-.checklist { background: white; border: 2px solid var(--teal); border-radius: 4px; padding: 18px; margin: 20px 0; }
-.checklist.pink   { border-color: var(--pink);   }
-.checklist.purple { border-color: var(--purple); }
-.checklist.blue   { border-color: var(--blue);   }
-.checklist.gold   { border-color: var(--gold);   }
-.checklist h3 { font-size: 0.78rem; text-align: center; border-bottom: 2px dashed currentColor; padding-bottom: 10px; margin: 0 0 14px; color: var(--teal); }
-.checklist.pink h3   { color: var(--pink);   }
-.checklist.purple h3 { color: var(--purple); }
-.checklist.blue h3   { color: var(--blue);   }
-.checklist.gold h3   { color: var(--gold);   }
-.ci { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
-.chk { width: 20px; height: 20px; border: 2px solid var(--teal); border-radius: 3px; flex-shrink: 0; cursor: pointer; position: relative; margin-top: 2px; transition: background 0.2s; }
-.checklist.pink .chk   { border-color: var(--pink);   }
-.checklist.purple .chk { border-color: var(--purple); }
-.checklist.blue .chk   { border-color: var(--blue);   }
-.checklist.gold .chk   { border-color: var(--gold);   }
-.chk.checked { background: var(--teal); }
-.checklist.pink .chk.checked   { background: var(--pink);   }
-.checklist.purple .chk.checked { background: var(--purple); }
-.checklist.blue .chk.checked   { background: var(--blue);   }
-.checklist.gold .chk.checked   { background: var(--gold);   }
-.chk.checked::after { content: '✓'; position: absolute; color: white; font-size: 12px; font-weight: 700; top: 0; left: 3px; }
-.cl { font-family: 'Space Mono', monospace; font-size: 0.76rem; font-weight: 700; color: var(--teal); padding-top: 1px; }
-.checklist.pink .cl   { color: var(--pink);   }
-.checklist.purple .cl { color: var(--purple); }
-.checklist.blue .cl   { color: var(--blue);   }
-.checklist.gold .cl   { color: var(--gold);   }
+/* ---------- Video ---------- */
+.video {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  margin: 10px 0 14px;
+}
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-/* QUIZ */
-.question { background: white; border: 2px solid var(--warm-mid); border-radius: 4px; padding: 14px; margin-bottom: 12px; }
-.question-text { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.8rem; margin-bottom: 10px; }
+/* ---------- Images ---------- */
+.thumb {
+  position: relative;
+  cursor: zoom-in;
+  border: 2px solid var(--warm-mid);
+  background: #2c2c2c;
+  overflow: hidden;
+  margin: 6px 0 12px;
+}
+.thumb img { width: 100%; max-height: 340px; object-fit: contain; display: block; background: var(--white); }
+.thumb .enlarge {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  background: rgba(26,26,26,0.85);
+  color: var(--white);
+  font-family: "Space Mono", monospace;
+  font-size: 0.7rem;
+  padding: 3px 8px;
+}
+.thumb .missing-note {
+  display: none;
+  min-height: 140px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px;
+  font-family: "Space Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--concrete);
+}
+.thumb.missing { cursor: default; }
+.thumb.missing img, .thumb.missing .enlarge { display: none; }
+.thumb.missing .missing-note { display: flex; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+@media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+.two-col .thumb img { height: 160px; object-fit: cover; }
+.two-col p { font-size: 0.9rem; }
+
+/* ---------- Dark panel ---------- */
+.dark-panel { background: var(--ink); color: var(--paper); padding: 22px; }
+.panel-label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--pink);
+  margin-bottom: 12px;
+}
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+.example-grid .thumb img { height: 190px; object-fit: cover; }
+.caption { font-family: "Space Mono", monospace; font-size: 0.8rem; color: var(--warm-mid); }
+
+/* ---------- Citation ---------- */
+.citation {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-left: 8px solid var(--purple);
+  padding: 16px 18px;
+}
+.citation .quote { font-family: "DM Serif Display", serif; font-size: 1.25rem; font-style: italic; line-height: 1.4; margin-bottom: 8px; }
+.citation .credit { text-align: right; color: var(--concrete); font-size: 0.9rem; }
+.citation .ref {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--warm-mid);
+  font-family: "Space Mono", monospace;
+  font-size: 0.82rem;
+}
+.keywords {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 2;
+  color: var(--teal);
+}
+
+/* Font + blend samples */
+.font-sample { font-size: 1.3rem; margin-bottom: 4px; }
+.blend-card .thumb img { height: 130px; object-fit: cover; }
+.blend-card .label { color: var(--purple); }
+
+/* ---------- Tip box ---------- */
+.tip-box {
+  background: var(--gold-light);
+  border: 2px dashed var(--gold);
+  padding: 12px 16px;
+  margin: 14px 0;
+}
+.tip-box strong { color: var(--gold); font-family: "Space Mono", monospace; font-size: 0.85rem; }
+.tip-box ul { list-style: none; margin-top: 4px; }
+.tip-box li { padding-left: 18px; position: relative; }
+.tip-box li::before { content: "→"; position: absolute; left: 0; color: var(--gold); }
+
+/* ---------- Report ---------- */
+.reflect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 6px 0; }
+.reflect { background: var(--blue-light); border: 2px solid var(--blue); padding: 12px; }
+.reflect .label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--blue);
+  margin-bottom: 4px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 12px 20px;
+  border: 2px solid var(--ink);
+  background: var(--c);
+  color: var(--white);
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  margin-top: 8px;
+}
+.btn:hover { color: var(--white); transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px dashed var(--warm-mid);
+}
+.prev-btn, .next-btn {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 16px;
+  border: 2px solid var(--ink);
+  cursor: pointer;
+}
+.prev-btn { background: var(--white); color: var(--ink); }
+.prev-btn[disabled] { opacity: 0.35; cursor: default; }
+.next-btn { background: var(--ink); color: var(--white); margin-left: auto; }
+
+/* ---------- Submit ---------- */
+.padlet-box {
+  background: var(--gold-light);
+  border: 3px dashed var(--gold);
+  padding: 22px;
+  text-align: center;
+}
+.padlet-box h3 {
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
+  font-size: 1.6rem;
+  margin-bottom: 14px;
+}
+.padlet-box .card-grid { text-align: left; margin-bottom: 14px; }
+
+/* ---------- Checklist ---------- */
+.checklist { background: var(--white); border: 2px solid var(--c); padding: 18px 20px; margin-top: 28px; }
+.checklist h3 {
+  font-family: "Space Mono", monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--c);
+  margin-bottom: 8px;
+}
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px dashed var(--warm-mid);
+  padding: 10px 2px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.check-item:last-of-type { border-bottom: none; }
+.box {
+  width: 24px; height: 24px;
+  border: 2px solid var(--c);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  color: var(--white);
+}
+.check-item.done .box { background: var(--c); }
+.check-item.done .box::after { content: "✓"; }
+.check-item.done .text { text-decoration: line-through; color: var(--concrete); }
+.check-count { margin-top: 8px; font-family: "Space Mono", monospace; font-size: 0.8rem; color: var(--concrete); text-align: right; }
+
+/* ---------- Lightbox ---------- */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,26,26,0.92);
+  z-index: 1000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 82vh; border: 3px solid var(--white); background: var(--white); }
+.lb-cap { color: var(--warm-mid); font-family: "Space Mono", monospace; font-size: 0.8rem; margin-top: 10px; text-align: center; }
+.lightbox-close {
+  position: absolute;
+  top: 10px; right: 16px;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 2.4rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 2px dashed var(--warm-mid);
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--concrete);
+}
+
+/* ---------- Extra for this lesson ---------- */
+.nav-grid { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+.chip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 8px; }
+.chip { background: var(--purple-light); border: 2px solid var(--purple); padding: 8px 12px; }
+.chip b { font-family: "Space Mono", monospace; color: var(--purple); display: block; font-size: 0.9rem; }
+.chip span { font-size: 0.85rem; }
+.card ul, .card ol { list-style: none; }
+.card li { padding-left: 18px; position: relative; margin-bottom: 4px; }
+.card ul li::before { content: "→"; position: absolute; left: 0; color: var(--cc, var(--teal)); }
+.card ol { counter-reset: n; }
+.card ol li { counter-increment: n; padding-left: 24px; }
+.card ol li::before { content: counter(n) "."; position: absolute; left: 0; font-family: "Space Mono", monospace; font-weight: 700; color: var(--cc, var(--teal)); }
+.acc-body ol { list-style: none; counter-reset: n; }
+.acc-body ol li { counter-increment: n; padding-left: 26px; position: relative; margin-bottom: 4px; }
+.acc-body ol li::before { content: counter(n) "."; position: absolute; left: 0; font-family: "Space Mono", monospace; font-weight: 700; color: var(--c); }
+.use { color: var(--concrete); font-size: 0.9rem; margin-bottom: 6px; }
+.font-sample-row { background: var(--paper); border-left: 4px solid var(--green); padding: 6px 10px; margin-bottom: 6px; }
+
+/* Quiz */
+.q { background: var(--white); border: 2px solid var(--ink); padding: 16px; margin-bottom: 12px; }
+.q-text { font-weight: 600; margin-bottom: 10px; }
 .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 @media (max-width: 560px) { .options { grid-template-columns: 1fr; } }
-.option { background: var(--paper); padding: 9px 12px; border-radius: 3px; cursor: pointer; border: 2px solid transparent; font-size: 0.82rem; transition: all 0.2s; }
-.option:hover { border-color: var(--teal); }
-.option.selected { background: var(--teal-light); border-color: var(--teal); }
-.option.correct { background: #d4edda !important; border-color: #28a745 !important; }
-.option.incorrect { background: #f8d7da !important; border-color: #dc3545 !important; }
+.opt { font: inherit; color: inherit; text-align: left; background: var(--paper); border: 2px solid var(--warm-mid); padding: 10px 14px; cursor: pointer; }
+.opt:hover { border-color: var(--purple); }
+.opt.selected { background: var(--purple-light); border-color: var(--purple); }
+.opt.right, .order-item.right { background: var(--green-light); border-color: var(--green); }
+.opt.wrong, .order-item.wrong { background: #fbe7e5; border-color: #b3261e; }
 .order-list { list-style: none; margin: 10px 0; }
-.order-item { display: flex; align-items: center; gap: 10px; background: white; border: 2px solid var(--warm-mid); border-radius: 3px; padding: 9px 12px; margin-bottom: 6px; font-size: 0.82rem; }
-.order-item.correct { background: #d4edda; border-color: #28a745; }
-.order-item.incorrect { background: #f8d7da; border-color: #dc3545; }
+.order-item { display: flex; align-items: center; gap: 10px; background: var(--white); border: 2px solid var(--ink); padding: 8px 12px; margin-bottom: 6px; }
 .order-item span { flex: 1; }
-.order-btn { background: var(--ink); color: white; border: none; border-radius: 3px; width: 28px; height: 28px; cursor: pointer; font-size: 0.8rem; }
-.check-btn { background: var(--pink); color: white; border: none; border-radius: 3px; padding: 10px 20px; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.74rem; text-transform: uppercase; cursor: pointer; margin-top: 6px; }
-.feedback { margin-top: 10px; padding: 10px 14px; border-radius: 3px; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.78rem; display: none; }
-.feedback.ok { background: #d4edda; color: #155724; display: block; }
-.feedback.no { background: #f8d7da; color: #721c24; display: block; }
-
-/* NAV BUTTONS */
-.nav-btns { display: flex; justify-content: space-between; margin: 28px 0 10px; gap: 10px; }
-.nav-btn { padding: 10px 20px; border: 2px solid var(--ink); border-radius: 3px; font-family: 'Space Mono', monospace; font-size: 0.72rem; font-weight: 700; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; }
-.nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
-.btn-prev { background: white; color: var(--ink); }
-.btn-next { background: var(--ink); color: white; }
-.btn-next.pink   { background: var(--pink);   border-color: var(--pink);   }
-.btn-next.purple { background: var(--purple); border-color: var(--purple); }
-.btn-next.teal   { background: var(--teal);   border-color: var(--teal);   }
-.btn-next.blue   { background: var(--blue);   border-color: var(--blue);   }
-.btn-next.gold   { background: var(--gold);   border-color: var(--gold);   }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
-
-/* LIGHTBOX */
-.lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; padding: 20px; cursor: zoom-out; }
-.lightbox.open { display: flex; }
-.lightbox img { max-width: 88vw; max-height: 78vh; border: 3px solid white; border-radius: 3px; object-fit: contain; }
-.lb-cap { color: #ccc; font-family: 'Space Mono', monospace; font-size: 0.72rem; margin-top: 10px; }
-.lb-close { position: absolute; top: 14px; right: 20px; color: white; font-size: 2.2rem; cursor: pointer; background: none; border: none; opacity: 0.7; }
-
-footer { text-align: center; padding: 20px 0 10px; border-top: 1px dashed var(--warm-mid); margin-top: 40px; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--concrete); }
-
-@media (max-width: 600px) {
-  .container { padding: 20px 14px 40px; }
-  .site-header { grid-template-columns: 1fr; }
-  .header-meta { text-align: left; }
-}
+.order-btn { background: var(--ink); color: var(--white); border: none; width: 34px; height: 34px; cursor: pointer; font-size: 0.9rem; }
+.order-btn[disabled] { opacity: 0.3; cursor: default; }
+.feedback { margin-top: 10px; padding: 10px 14px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 0.85rem; display: none; }
+.feedback.ok { display: block; background: var(--green-light); color: var(--green); }
+.feedback.no { display: block; background: #fbe7e5; color: #b3261e; }
 </style>
 </head>
 <body>
+<div class="page">
 
-<div class="lightbox" id="lightbox" onclick="closeLB()">
-  <button class="lb-close">✕</button>
-  <img id="lb-img" src="" alt="">
-  <div class="lb-cap" id="lb-cap"></div>
-</div>
-
-<div class="container">
-
-  <header class="site-header">
+  <header>
     <div>
-      <div class="header-eyebrow">Digital Skills · Term 2 · Week 3 · IELS Level 5</div>
-      <h1>Monoprint<br><em>Handmade to Digital</em></h1>
+      <div class="eyebrow">Digital Skills · Term 2 · Week 3 · IELS Level 5</div>
+      <h1>Monoprint<em>Handmade to Digital</em></h1>
     </div>
-    <div class="header-meta">
-      Print · scan · edit<br>↓<br>texture for your project
-    </div>
+    <div class="meta"><strong>Print · scan · edit ↓</strong>texture for your project</div>
   </header>
 
-  <div class="progress-wrap"><div class="progress-fill" id="progressBar" style="width:12.5%"></div></div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
 
-  <div class="nav-grid">
-    <div class="nav-block active" data-sec="overview"><span class="nav-icon">🏠</span><span class="nav-label">Overview</span><span class="nav-sub">Start</span></div>
-    <div class="nav-block" data-sec="task1"><span class="nav-icon">🖨️</span><span class="nav-label">Task 1</span><span class="nav-sub">Digitise</span></div>
-    <div class="nav-block" data-sec="task2"><span class="nav-icon">⚫</span><span class="nav-label">Task 2</span><span class="nav-sub">Threshold</span></div>
-    <div class="nav-block" data-sec="task3"><span class="nav-icon">🎭</span><span class="nav-label">Task 3</span><span class="nav-sub">Masks</span></div>
-    <div class="nav-block" data-sec="task4"><span class="nav-icon">🧵</span><span class="nav-label">Task 4</span><span class="nav-sub">Apply</span></div>
-    <div class="nav-block" data-sec="report"><span class="nav-icon">📝</span><span class="nav-label">Report</span><span class="nav-sub">Reflect</span></div>
-    <div class="nav-block" data-sec="submit"><span class="nav-icon">📤</span><span class="nav-label">Submit</span><span class="nav-sub">Padlet</span></div>
-    <div class="nav-block" data-sec="quiz"><span class="nav-icon">❓</span><span class="nav-label">Quiz</span><span class="nav-sub">Test</span></div>
-  </div>
+  <nav class="nav-grid">
+    <button class="nav-block" data-section="overview" style="--c: var(--ink)"><span class="n">🏠 Start</span><span class="t">Overview</span></button>
+    <button class="nav-block" data-section="task1" style="--c: var(--teal)"><span class="n">🖨️ Task 1</span><span class="t">Digitise</span></button>
+    <button class="nav-block" data-section="task2" style="--c: var(--purple)"><span class="n">⚫ Task 2</span><span class="t">Threshold</span></button>
+    <button class="nav-block" data-section="task3" style="--c: var(--purple)"><span class="n">🎭 Task 3</span><span class="t">Masks</span></button>
+    <button class="nav-block" data-section="task4" style="--c: var(--teal)"><span class="n">🧵 Task 4</span><span class="t">Apply</span></button>
+    <button class="nav-block" data-section="report" style="--c: var(--blue)"><span class="n">📝 Report</span><span class="t">Reflect</span></button>
+    <button class="nav-block" data-section="submit" style="--c: var(--gold)"><span class="n">📤 Submit</span><span class="t">Padlet</span></button>
+    <button class="nav-block" data-section="quiz" style="--c: var(--ink)"><span class="n">❓ Quiz</span><span class="t">Test</span></button>
+  </nav>
 
-  <!-- ═══ OVERVIEW ═══ -->
-  <div id="overview" class="section active">
-    <div class="section-banner b-teal">🏠 What You Will Do Today</div>
+  <!-- ===================== OVERVIEW ===================== -->
+  <section class="content-section" id="overview" style="--c: var(--teal); --cl: var(--teal-light)">
+    <div class="section-banner">🏠 What You Will Do Today</div>
+    <p class="intro">Turn your <strong>oil pastel monoprints</strong> into digital textures. Use them in your <strong>Term 2 project</strong>.</p>
 
-    <p>Turn your <strong>oil pastel monoprints</strong> into digital textures. Use them in your <strong>Term 2 project</strong>.</p>
-
-    <div class="notice"><strong>Homework check:</strong> you need your <strong>2–3 monoprints</strong>, scanned at 300 dpi. <a href="https://hsstokes.github.io/Black-Oil-Pastel-Monoprint/" target="_blank">Homework instructions ↗</a></div>
+    <div class="box-note pink"><strong>Homework check:</strong> you need your <strong>2–3 monoprints</strong>, scanned at 300 dpi. <a href="https://hsstokes.github.io/Black-Oil-Pastel-Monoprint/" target="_blank" rel="noopener">Homework instructions ↗</a></div>
 
     <h2>Artist Inspiration</h2>
-    <div class="eg-grid">
-      <a class="eg-card" href="https://drawingroomgallery.com/exhibitions/searching-for-the-in-between/" target="_blank" style="text-decoration:none;cursor:pointer;">
-        <img src="benjie-cabrera.jpg" alt="Benjie Torrado Cabrera" onerror="this.style.display='none'">
-        <div class="eg-cap">Benjie Torrado Cabrera — When Water Meets Earth, 2014 ↗</div>
+    <p class="intro muted">Click a card to see more of the artist's work.</p>
+    <div class="card-grid">
+      <a class="card artist-card" href="https://drawingroomgallery.com/exhibitions/searching-for-the-in-between/" target="_blank" rel="noopener">
+        <div class="artist-img"><img src="benjie-cabrera.jpg" alt="Benjie Torrado Cabrera artwork" onerror="this.parentElement.textContent='🖼️'"></div>
+        <div class="artist-body"><div class="label">Benjie Torrado Cabrera</div><span>When Water Meets Earth, 2014 ↗</span></div>
       </a>
-      <a class="eg-card" href="https://www.moma.org/artists/28097-wangechi-mutu" target="_blank" style="text-decoration:none;cursor:pointer;">
-        <img src="wangechi-mutu.jpg" alt="Wangechi Mutu" onerror="this.style.display='none'">
-        <div class="eg-cap">Wangechi Mutu — Eve, 2006 ↗</div>
+      <a class="card artist-card" href="https://www.moma.org/artists/28097-wangechi-mutu" target="_blank" rel="noopener">
+        <div class="artist-img"><img src="wangechi-mutu.jpg" alt="Wangechi Mutu artwork" onerror="this.parentElement.textContent='🖼️'"></div>
+        <div class="artist-body"><div class="label">Wangechi Mutu</div><span>Eve, 2006 ↗</span></div>
       </a>
-      <a class="eg-card" href="https://www.mariangoodman.com/exhibitions/227-william-kentridge/" target="_blank" style="text-decoration:none;cursor:pointer;">
-        <img src="william-kentridge.jpg" alt="William Kentridge" onerror="this.style.display='none'">
-        <div class="eg-cap">William Kentridge — Music Box Tondo, 2006 ↗</div>
+      <a class="card artist-card" href="https://www.mariangoodman.com/exhibitions/227-william-kentridge/" target="_blank" rel="noopener">
+        <div class="artist-img"><img src="william-kentridge.jpg" alt="William Kentridge artwork" onerror="this.parentElement.textContent='🖼️'"></div>
+        <div class="artist-body"><div class="label">William Kentridge</div><span>Music Box Tondo, 2006 ↗</span></div>
       </a>
     </div>
-    <div class="notice"><strong>Remember:</strong> reference any artist you use (Harvard).</div>
+    <div class="box-note pink"><strong>Remember:</strong> reference any artist you use (Harvard).</div>
 
     <h2>Student Example</h2>
-    <div class="eg-grid" style="grid-template-columns:minmax(0,600px);justify-content:center;">
-      <div class="eg-card" onclick="openLB('monoprint-example.jpg','Vu Linh Nghi Nguyen (Linnie)')">
-        <img src="monoprint-example.jpg" alt="Student monoprint texture" style="height:300px;object-fit:contain;background:white;" onerror="this.style.display='none'">
-        <div class="eg-cap">Monoprint developed in Photoshop — Vu Linh Nghi Nguyen (Linnie)</div>
+    <div class="dark-panel">
+      <div class="panel-label">Student work · click to enlarge</div>
+      <div class="thumb" data-src="monoprint-example.jpg" data-cap="Monoprint developed in Photoshop — Vu Linh Nghi Nguyen (Linnie)">
+        <img src="monoprint-example.jpg" alt="Student monoprint texture">
+        <div class="missing-note">Image not found:<br>monoprint-example.jpg</div>
+        <span class="enlarge">🔍 Enlarge</span>
       </div>
+      <div class="caption">Monoprint developed in Photoshop — Vu Linh Nghi Nguyen (Linnie)</div>
     </div>
 
-    <div class="diagonal-rule"></div>
+    <div class="rule"></div>
 
     <h2>Today's Tasks</h2>
-    <div class="overview-grid">
-      <div class="ov-card ov-teal" onclick="goTo('task1')"><div class="ov-icon">🖨️</div><h4>Task 1</h4><p>Scan &amp; set up</p></div>
-      <div class="ov-card ov-purple" onclick="goTo('task2')"><div class="ov-icon">⚫</div><h4>Task 2</h4><p>Threshold &amp; remove white</p></div>
-      <div class="ov-card ov-purple" onclick="goTo('task3')"><div class="ov-icon">🎭</div><h4>Task 3</h4><p>Masks, blends, colour</p></div>
-      <div class="ov-card ov-teal" onclick="goTo('task4')"><div class="ov-icon">🧵</div><h4>Task 4</h4><p>Use in your project</p></div>
-      <div class="ov-card ov-blue" onclick="goTo('report')"><div class="ov-icon">📝</div><h4>Report</h4><p>Progress PDF</p></div>
-      <div class="ov-card ov-gold" onclick="goTo('submit')"><div class="ov-icon">📤</div><h4>Submit</h4><p>Padlet</p></div>
+    <div class="card-grid">
+      <button class="card" type="button" data-go="task1" style="--cc: var(--teal)"><span class="icon">🖨️</span><div class="label">Task 1</div>Scan &amp; set up</button>
+      <button class="card" type="button" data-go="task2" style="--cc: var(--purple)"><span class="icon">⚫</span><div class="label">Task 2</div>Threshold &amp; remove white</button>
+      <button class="card" type="button" data-go="task3" style="--cc: var(--purple)"><span class="icon">🎭</span><div class="label">Task 3</div>Masks, blends, colour</button>
+      <button class="card" type="button" data-go="task4" style="--cc: var(--teal)"><span class="icon">🧵</span><div class="label">Task 4</div>Use in your project</button>
+      <button class="card" type="button" data-go="report" style="--cc: var(--blue)"><span class="icon">📝</span><div class="label">Report</div>Progress PDF</button>
+      <button class="card" type="button" data-go="submit" style="--cc: var(--gold)"><span class="icon">📤</span><div class="label">Submit</div>Padlet</button>
     </div>
 
-    <div class="info-box">
+    <div class="box-note">
       <strong>Key words:</strong>
       <ul>
         <li><strong>Threshold</strong> — pure black and white, no grey</li>
@@ -387,157 +659,164 @@ footer { text-align: center; padding: 20px 0 10px; border-top: 1px dashed var(--
       </ul>
     </div>
 
-    <div class="nav-btns">
-      <button class="nav-btn btn-prev" disabled>← Previous</button>
-      <button class="nav-btn btn-next teal" onclick="goTo('task1')">Task 1 →</button>
+    <div class="nav-buttons">
+      <button class="prev-btn" disabled>← Previous</button>
+      <button class="next-btn" data-go="task1">Task 1 →</button>
     </div>
-  </div>
+  </section>
 
-  <!-- ═══ TASK 1 ═══ -->
-  <div id="task1" class="section">
-    <div class="section-banner b-teal">🖨️ Task 1 — Digitise Your Prints</div>
+  <!-- ===================== TASK 1 ===================== -->
+  <section class="content-section" id="task1" style="--c: var(--teal); --cl: var(--teal-light)">
+    <div class="section-banner">🖨️ Task 1 — Digitise Your Prints</div>
+    <div class="box-note"><strong>Goal:</strong> bring your prints into Photoshop.</div>
 
-    <p>Bring your prints into Photoshop.</p>
-
-    <div class="tools-grid">
-      <div class="tool-card">
-        <h3>Scan</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="label">Scan</div>
         <ol>
           <li><strong>300 dpi</strong> or higher</li>
           <li>Colour mode (even for black)</li>
           <li>Print lies flat</li>
           <li>Save as JPG, PNG or TIFF</li>
         </ol>
-        <p class="use" style="margin-top:8px;">No scanner? Phone photo · from above · good light · no shadows.</p>
+        <p class="use" style="margin-top: 8px;">No scanner? Phone photo · from above · good light · no shadows.</p>
       </div>
-      <div class="tool-card">
-        <h3>Set Up</h3>
+      <div class="card">
+        <div class="label">Set up</div>
         <ol>
           <li>New document: <strong>A3 landscape · 300 dpi</strong></li>
-          <li><span class="key">File → Place Embedded</span></li>
-          <li>Duplicate the layer <span class="key">Cmd/Ctrl+J</span></li>
+          <li><span class="menu">File → Place Embedded</span></li>
+          <li>Duplicate the layer <span class="key">Cmd/Ctrl</span>+<span class="key">J</span></li>
           <li>Save as <strong>PSD</strong></li>
         </ol>
-        <img src="photoshop-setup.jpg" alt="Photoshop setup" style="width:100%;margin-top:8px;border:2px solid var(--warm-mid);border-radius:3px;cursor:zoom-in;" onclick="openLB(this.src,'Photoshop setup')" onerror="this.style.display='none'">
+        <div class="thumb" data-src="photoshop-setup.jpg" data-cap="Photoshop setup">
+          <img src="photoshop-setup.jpg" alt="Photoshop setup">
+          <div class="missing-note">Image not found:<br>photoshop-setup.jpg</div>
+          <span class="enlarge">🔍 Enlarge</span>
+        </div>
       </div>
     </div>
 
-    <div class="notice"><strong>Keep your original.</strong> Work on the copy.</div>
+    <div class="box-note gold"><strong>Keep your original.</strong> Work on the copy.</div>
 
-    <div class="checklist">
-      <h3>Task 1 Checklist ✓</h3>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Scanned at 300 dpi</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">A3 document · scan placed · layer duplicated</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Saved as PSD</span></div>
+    <div class="checklist" data-key="mp-task1">
+      <h3>✅ Task 1 Checklist</h3>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Scanned at 300 dpi</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">A3 document · scan placed · layer duplicated</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Saved as PSD</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Screenshot taken</span></button>
+      <div class="check-count"></div>
     </div>
 
-    <div class="nav-btns">
-      <button class="nav-btn btn-prev" onclick="goTo('overview')">← Overview</button>
-      <button class="nav-btn btn-next purple" onclick="goTo('task2')">Task 2 →</button>
+    <div class="nav-buttons">
+      <button class="prev-btn" data-go="overview">← Overview</button>
+      <button class="next-btn" data-go="task2">Task 2 →</button>
     </div>
-  </div>
+  </section>
 
-  <!-- ═══ TASK 2 ═══ -->
-  <div id="task2" class="section">
-    <div class="section-banner b-purple">⚫ Task 2 — Threshold &amp; Remove White</div>
+  <!-- ===================== TASK 2 ===================== -->
+  <section class="content-section" id="task2" style="--c: var(--purple); --cl: var(--purple-light)">
+    <div class="section-banner">⚫ Task 2 — Threshold &amp; Remove White</div>
+    <div class="box-note"><strong>Goal:</strong> make your print black and white. Remove the white background.</div>
 
-    <p>Make your print black and white. Remove the white background.</p>
-
-    <div class="steps-list">
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num purple">1</div>
-          <div class="step-title-text" style="color:var(--purple);">Apply Threshold</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body">
-          <img src="threshold-adjustment.jpg" alt="Threshold" style="width:100%;margin-bottom:8px;border:2px solid var(--warm-mid);border-radius:3px;" onerror="this.style.display='none'">
+    <h2>Steps — click to open</h2>
+    <div class="accordion">
+      <div class="acc open">
+        <button class="acc-head" type="button"><span class="acc-num">1</span><span class="acc-title">Apply Threshold</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body">
+          <div class="thumb" data-src="threshold-adjustment.jpg" data-cap="Threshold">
+            <img src="threshold-adjustment.jpg" alt="Threshold">
+            <div class="missing-note">Image not found:<br>threshold-adjustment.jpg</div>
+            <span class="enlarge">🔍 Enlarge</span>
+          </div>
           <ol>
-            <li><span class="key">Image → Adjustments → Threshold</span></li>
+            <li><span class="menu">Image → Adjustments → Threshold</span></li>
             <li>Move the slider</li>
             <li>Click OK</li>
           </ol>
         </div>
       </div>
 
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num purple">2</div>
-          <div class="step-title-text" style="color:var(--purple);">Select the White</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body">
-          <img src="select-white-areas.jpg" alt="Select white areas" style="width:100%;margin-bottom:8px;border:2px solid var(--warm-mid);border-radius:3px;" onerror="this.style.display='none'">
+      <div class="acc">
+        <button class="acc-head" type="button"><span class="acc-num">2</span><span class="acc-title">Select the white</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body">
+          <div class="thumb" data-src="select-white-areas.jpg" data-cap="Select white areas">
+            <img src="select-white-areas.jpg" alt="Select white areas">
+            <div class="missing-note">Image not found:<br>select-white-areas.jpg</div>
+            <span class="enlarge">🔍 Enlarge</span>
+          </div>
           <ol>
             <li>Rectangular Marquee <span class="key">M</span></li>
             <li>Draw a box in a white area</li>
-            <li><span class="key">Select → Similar</span></li>
+            <li><span class="menu">Select → Similar</span></li>
           </ol>
         </div>
       </div>
 
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num purple">3</div>
-          <div class="step-title-text" style="color:var(--purple);">Delete the White</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body">
-          <img src="delete-white.jpg" alt="White removed" style="width:100%;margin-bottom:8px;border:2px solid var(--warm-mid);border-radius:3px;" onerror="this.style.display='none'">
+      <div class="acc">
+        <button class="acc-head" type="button"><span class="acc-num">3</span><span class="acc-title">Delete the white</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body">
+          <div class="thumb" data-src="delete-white.jpg" data-cap="White removed">
+            <img src="delete-white.jpg" alt="White removed">
+            <div class="missing-note">Image not found:<br>delete-white.jpg</div>
+            <span class="enlarge">🔍 Enlarge</span>
+          </div>
           <ol>
             <li>Press <span class="key">Delete</span></li>
             <li>Only the texture is left</li>
-            <li>Deselect <span class="key">Cmd/Ctrl+D</span></li>
+            <li>Deselect <span class="key">Cmd/Ctrl</span>+<span class="key">D</span></li>
           </ol>
         </div>
       </div>
     </div>
 
-    <div class="tools-grid">
-      <div class="tool-card purple">
-        <h3>Also: Magic Wand (W)</h3>
+    <h2>Other Selection Tools</h2>
+    <div class="card-grid">
+      <div class="card" style="--cc: var(--purple)">
+        <div class="label">Magic Wand <span class="key">W</span></div>
         <p class="use">Areas of one colour</p>
         <ul><li>Tolerance 20–40</li><li><span class="key">Shift</span> add · <span class="key">Alt/Opt</span> remove</li></ul>
       </div>
-      <div class="tool-card purple">
-        <h3>Also: Polygonal Lasso (L)</h3>
+      <div class="card" style="--cc: var(--purple)">
+        <div class="label">Polygonal Lasso <span class="key">L</span></div>
         <p class="use">Straight edges</p>
         <ul><li>Click points around the shape</li><li>Join back to the start</li></ul>
       </div>
     </div>
 
-    <div class="checklist purple">
-      <h3>Task 2 Checklist ✓</h3>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Applied Threshold</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Selected white with Select → Similar</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Deleted the white</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Screenshot taken</span></div>
+    <div class="checklist" data-key="mp-task2">
+      <h3>✅ Task 2 Checklist</h3>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Applied Threshold</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Selected white with Select → Similar</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Deleted the white</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Screenshot taken</span></button>
+      <div class="check-count"></div>
     </div>
 
-    <div class="nav-btns">
-      <button class="nav-btn btn-prev" onclick="goTo('task1')">← Task 1</button>
-      <button class="nav-btn btn-next purple" onclick="goTo('task3')">Task 3 →</button>
+    <div class="nav-buttons">
+      <button class="prev-btn" data-go="task1">← Task 1</button>
+      <button class="next-btn" data-go="task3">Task 3 →</button>
     </div>
-  </div>
+  </section>
 
-  <!-- ═══ TASK 3 ═══ -->
-  <div id="task3" class="section">
-    <div class="section-banner b-purple">🎭 Task 3 — Masks, Blend Modes &amp; Colour</div>
+  <!-- ===================== TASK 3 ===================== -->
+  <section class="content-section" id="task3" style="--c: var(--purple); --cl: var(--purple-light)">
+    <div class="section-banner">🎭 Task 3 — Masks, Blend Modes &amp; Colour</div>
+    <div class="box-note"><strong>Goal:</strong> control your texture. Mix it into the page. Add colour.</div>
 
-    <p>Control your texture. Mix it into the page. Add colour.</p>
-
-    <div class="steps-list">
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num purple">1</div>
-          <div class="step-title-text" style="color:var(--purple);">Layer Mask</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body">
-          <div class="vid-wrap">
-            <iframe src="https://ual.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=c9da94b7-f65e-4b2c-9ab3-b26d00b2457f&autoplay=false&offerviewer=true&showtitle=true&showbrand=false&captions=false&interactivity=all" allowfullscreen allow="autoplay"></iframe>
+    <h2>Steps — click to open</h2>
+    <div class="accordion">
+      <div class="acc open">
+        <button class="acc-head" type="button"><span class="acc-num">1</span><span class="acc-title">Layer Mask</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body">
+          <div class="video">
+            <iframe src="https://ual.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=c9da94b7-f65e-4b2c-9ab3-b26d00b2457f&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=false&amp;captions=false&amp;interactivity=all" title="Layer mask tutorial" allow="autoplay; fullscreen" allowfullscreen></iframe>
           </div>
-          <img src="layer-mask.jpg" alt="Layer mask" style="width:100%;margin-bottom:8px;border:2px solid var(--warm-mid);border-radius:3px;" onerror="this.style.display='none'">
+          <div class="thumb" data-src="layer-mask.jpg" data-cap="Layer mask">
+            <img src="layer-mask.jpg" alt="Layer mask">
+            <div class="missing-note">Image not found:<br>layer-mask.jpg</div>
+            <span class="enlarge">🔍 Enlarge</span>
+          </div>
           <ol>
             <li>Layers panel → <strong>Add Layer Mask</strong></li>
             <li><strong>Black</strong> brush = hide</li>
@@ -546,146 +825,119 @@ footer { text-align: center; padding: 20px 0 10px; border-top: 1px dashed var(--
         </div>
       </div>
 
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num purple">2</div>
-          <div class="step-title-text" style="color:var(--purple);">Blend Modes</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body">
+      <div class="acc">
+        <button class="acc-head" type="button"><span class="acc-num">2</span><span class="acc-title">Blend Modes</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body">
           <p>Layers panel → change <strong>Normal</strong> to:</p>
-          <div class="blend-grid">
-            <div class="blend"><b>Multiply</b><span>Darker · best on light backgrounds</span></div>
-            <div class="blend"><b>Overlay</b><span>More contrast</span></div>
-            <div class="blend"><b>Screen</b><span>Lighter</span></div>
-            <div class="blend"><b>Soft Light</b><span>Gentle contrast</span></div>
+          <div class="chip-grid">
+            <div class="chip"><b>Multiply</b><span>Darker · best on light backgrounds</span></div>
+            <div class="chip"><b>Overlay</b><span>More contrast</span></div>
+            <div class="chip"><b>Screen</b><span>Lighter</span></div>
+            <div class="chip"><b>Soft Light</b><span>Gentle contrast</span></div>
           </div>
-          <p>Use <strong>Opacity</strong> to make it softer.</p>
+          <p style="margin-top: 10px;">Use <strong>Opacity</strong> to make it softer.</p>
         </div>
       </div>
 
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num purple">3</div>
-          <div class="step-title-text" style="color:var(--purple);">Add Colour</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body">
+      <div class="acc">
+        <button class="acc-head" type="button"><span class="acc-num">3</span><span class="acc-title">Add Colour</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body">
           <ol>
-            <li><span class="key">Image → Adjustments → Hue/Saturation</span></li>
+            <li><span class="menu">Image → Adjustments → Hue/Saturation</span></li>
             <li>Tick <strong>Colorize</strong></li>
             <li>Move the sliders</li>
           </ol>
-          <div class="tip-box"><h4>💡 Quick colour</h4><ul><li>Put a colour fill layer underneath</li><li>Set the texture to a blend mode</li></ul></div>
+          <div class="tip-box"><strong>💡 Quick colour</strong><ul><li>Put a colour fill layer underneath</li><li>Set the texture to a blend mode</li></ul></div>
         </div>
       </div>
     </div>
 
-    <div class="checklist purple">
-      <h3>Task 3 Checklist ✓</h3>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Added a layer mask · hid areas with black</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Tried 2+ blend modes · changed opacity</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Added colour</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Screenshot taken</span></div>
+    <div class="checklist" data-key="mp-task3">
+      <h3>✅ Task 3 Checklist</h3>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Added a layer mask · hid areas with black</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Tried 2+ blend modes · changed opacity</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Added colour</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Screenshot taken</span></button>
+      <div class="check-count"></div>
     </div>
 
-    <div class="nav-btns">
-      <button class="nav-btn btn-prev" onclick="goTo('task2')">← Task 2</button>
-      <button class="nav-btn btn-next teal" onclick="goTo('task4')">Task 4 →</button>
+    <div class="nav-buttons">
+      <button class="prev-btn" data-go="task2">← Task 2</button>
+      <button class="next-btn" data-go="task4">Task 4 →</button>
     </div>
-  </div>
+  </section>
 
-  <!-- ═══ TASK 4 ═══ -->
-  <div id="task4" class="section">
-    <div class="section-banner b-teal">🧵 Task 4 — Use It in Your Project</div>
+  <!-- ===================== TASK 4 ===================== -->
+  <section class="content-section" id="task4" style="--c: var(--teal); --cl: var(--teal-light)">
+    <div class="section-banner">🧵 Task 4 — Use It in Your Project</div>
+    <div class="box-note"><strong>Goal:</strong> put your texture into your <strong>Term 2 design</strong>.</div>
 
-    <p>Put your texture into your <strong>Term 2 design</strong>.</p>
-
-    <div class="tools-grid">
-      <div class="tool-card"><h3>Backgrounds</h3><p class="use">Depth behind figures</p></div>
-      <div class="tool-card"><h3>Surfaces</h3><p class="use">On fabric or garments</p></div>
-      <div class="tool-card"><h3>Collage</h3><p class="use">Layered design sheets</p></div>
-      <div class="tool-card"><h3>Details</h3><p class="use">Small accents</p></div>
+    <div class="card-grid">
+      <div class="card"><div class="label">Backgrounds</div><span class="use">Depth behind figures</span></div>
+      <div class="card"><div class="label">Surfaces</div><span class="use">On fabric or garments</span></div>
+      <div class="card"><div class="label">Collage</div><span class="use">Layered design sheets</span></div>
+      <div class="card"><div class="label">Details</div><span class="use">Small accents</span></div>
     </div>
 
-    <div class="steps-list">
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num">1</div>
-          <div class="step-title-text">Copy</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body"><ul><li>Drag the layer into your project file</li><li>or <span class="key">Cmd/Ctrl+C</span> → <span class="key">Cmd/Ctrl+V</span></li></ul></div>
+    <h2>Steps — click to open</h2>
+    <div class="accordion">
+      <div class="acc open">
+        <button class="acc-head" type="button"><span class="acc-num">1</span><span class="acc-title">Copy</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body"><ul><li>Drag the layer into your project file</li><li>or <span class="key">Cmd/Ctrl</span>+<span class="key">C</span> → <span class="key">Cmd/Ctrl</span>+<span class="key">V</span></li></ul></div>
       </div>
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num">2</div>
-          <div class="step-title-text">Position &amp; Scale</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body"><ul><li><span class="key">Cmd/Ctrl+T</span></li><li>Drag corners (<span class="key">Shift</span> keeps the shape)</li><li><span class="key">Enter</span> to confirm</li></ul></div>
+      <div class="acc">
+        <button class="acc-head" type="button"><span class="acc-num">2</span><span class="acc-title">Position &amp; Scale</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body"><ul><li><span class="key">Cmd/Ctrl</span>+<span class="key">T</span></li><li>Drag corners (<span class="key">Shift</span> keeps the shape)</li><li><span class="key">Enter</span> to confirm</li></ul></div>
       </div>
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num">3</div>
-          <div class="step-title-text">Refine</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body"><ul><li>Blend mode</li><li>Layer mask</li><li>Lower opacity</li><li>Match your project colours</li></ul></div>
+      <div class="acc">
+        <button class="acc-head" type="button"><span class="acc-num">3</span><span class="acc-title">Refine</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body"><ul><li>Blend mode</li><li>Layer mask</li><li>Lower opacity</li><li>Match your project colours</li></ul></div>
       </div>
     </div>
 
     <h2>Student Example</h2>
-    <div class="eg-grid" style="grid-template-columns:minmax(0,700px);justify-content:center;">
-      <div class="eg-card" onclick="openLB('monoprint-example-student.jpg','jayjay (Jidapa)')">
-        <img src="monoprint-example-student.jpg" alt="Monoprint texture in a design" style="height:320px;object-fit:contain;background:white;" onerror="this.style.display='none'">
-        <div class="eg-cap">String + oil pastel print → Threshold → design — jayjay (Jidapa)</div>
+    <div class="dark-panel">
+      <div class="panel-label">Student work · click to enlarge</div>
+      <div class="thumb" data-src="monoprint-example-student.jpg" data-cap="String + oil pastel print → Threshold → design — jayjay (Jidapa)">
+        <img src="monoprint-example-student.jpg" alt="Monoprint texture in a design">
+        <div class="missing-note">Image not found:<br>monoprint-example-student.jpg</div>
+        <span class="enlarge">🔍 Enlarge</span>
       </div>
+      <div class="caption">String + oil pastel print → Threshold → design — jayjay (Jidapa)</div>
     </div>
-    <div class="info-box"><strong>Why it works:</strong> handmade texture + clean digital edit + links to the project theme.</div>
+    <div class="box-note"><strong>Why it works:</strong> handmade texture + clean digital edit + links to the project theme.</div>
 
-    <div class="checklist">
-      <h3>Task 4 Checklist ✓</h3>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Texture placed in my project</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Refined with blend / mask / opacity</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Harvard references added</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Saved PSD · exported JPEG · screenshot</span></div>
-    </div>
-
-    <div class="nav-btns">
-      <button class="nav-btn btn-prev" onclick="goTo('task3')">← Task 3</button>
-      <button class="nav-btn btn-next blue" onclick="goTo('report')">Progress Report →</button>
-    </div>
-  </div>
-
-  <!-- ═══ PROGRESS REPORT ═══ -->
-  <div id="report" class="section">
-    <div class="section-banner b-blue">📝 Progress Report — Document &amp; Reflect</div>
-
-    <div class="info-box" style="background:var(--blue-light);border-color:var(--blue);">
-      <strong style="color:var(--blue);">Why?</strong> It shows <em>how</em> you learned. Reflection is assessed at Level 5.
+    <div class="checklist" data-key="mp-task4">
+      <h3>✅ Task 4 Checklist</h3>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Texture placed in my project</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Refined with blend / mask / opacity</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Harvard references added</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Saved PSD · exported JPEG · screenshot</span></button>
+      <div class="check-count"></div>
     </div>
 
-    <div class="steps-list">
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num" style="background:var(--blue);">1</div>
-          <div class="step-title-text" style="color:var(--blue);">Open the tool</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body">
-          <div style="text-align:center;margin:12px 0;">
-            <a href="https://hsstokes.github.io/Progress_Documentation/" target="_blank" class="cta-btn cta-blue">📝 Open Progress Report Tool →</a>
-          </div>
+    <div class="nav-buttons">
+      <button class="prev-btn" data-go="task3">← Task 3</button>
+      <button class="next-btn" data-go="report">Progress Report →</button>
+    </div>
+  </section>
+
+  <!-- ===================== PROGRESS REPORT ===================== -->
+  <section class="content-section" id="report" style="--c: var(--blue); --cl: var(--blue-light)">
+    <div class="section-banner">📝 Progress Report — Document &amp; Reflect</div>
+    <div class="box-note"><strong>Why?</strong> It shows <em>how</em> you learned. Reflection is assessed at Level 5.</div>
+
+    <h2>Steps — click to open</h2>
+    <div class="accordion">
+      <div class="acc open">
+        <button class="acc-head" type="button"><span class="acc-num">1</span><span class="acc-title">Open the tool</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body">
+          <a class="btn" href="https://hsstokes.github.io/Progress_Documentation/" target="_blank" rel="noopener">📝 Open Progress Report Tool ↗</a>
         </div>
       </div>
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num" style="background:var(--blue);">2</div>
-          <div class="step-title-text" style="color:var(--blue);">Name + screenshots</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body">
+      <div class="acc">
+        <button class="acc-head" type="button"><span class="acc-num">2</span><span class="acc-title">Name + screenshots</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body">
           <ul>
             <li>Type your full name</li>
             <li>Upload <strong>2–3 screenshots</strong> — print, Threshold, final design</li>
@@ -693,21 +945,17 @@ footer { text-align: center; padding: 20px 0 10px; border-top: 1px dashed var(--
           </ul>
         </div>
       </div>
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num" style="background:var(--blue);">3</div>
-          <div class="step-title-text" style="color:var(--blue);">Answer 4 questions</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body">
-          <div class="reflection-grid">
-            <div class="reflection-card"><h3>1. Techniques</h3><p>Which tools did you use?</p></div>
-            <div class="reflection-card"><h3>2. Challenges</h3><p>What was difficult? How did you fix it?</p></div>
-            <div class="reflection-card"><h3>3. What worked</h3><p>What are you happy with?</p></div>
-            <div class="reflection-card"><h3>4. Next time</h3><p>What will you change?</p></div>
+      <div class="acc">
+        <button class="acc-head" type="button"><span class="acc-num">3</span><span class="acc-title">Answer 4 questions</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body">
+          <div class="reflect-grid">
+            <div class="reflect"><div class="label">1. Techniques</div>Which tools did you use?</div>
+            <div class="reflect"><div class="label">2. Challenges</div>What was difficult? How did you fix it?</div>
+            <div class="reflect"><div class="label">3. What worked</div>What are you happy with?</div>
+            <div class="reflect"><div class="label">4. Next time</div>What will you change?</div>
           </div>
           <div class="tip-box">
-            <h4>💡 Useful phrases</h4>
+            <strong>💡 Useful phrases</strong>
             <ul>
               <li><em>"I used … to …"</em></li>
               <li><em>"This worked because …"</em></li>
@@ -716,13 +964,9 @@ footer { text-align: center; padding: 20px 0 10px; border-top: 1px dashed var(--
           </div>
         </div>
       </div>
-      <div class="step-item">
-        <div class="step-header" onclick="toggleStep(this)">
-          <div class="step-num" style="background:var(--blue);">4</div>
-          <div class="step-title-text" style="color:var(--blue);">Download PDF</div>
-          <div class="step-toggle">▶</div>
-        </div>
-        <div class="step-body">
+      <div class="acc">
+        <button class="acc-head" type="button"><span class="acc-num">4</span><span class="acc-title">Download PDF</span><span class="acc-arrow">›</span></button>
+        <div class="acc-body">
           <ul>
             <li>Click <strong>Download Progress Report (PDF)</strong></li>
             <li>Save it — you upload it to Padlet next</li>
@@ -731,35 +975,46 @@ footer { text-align: center; padding: 20px 0 10px; border-top: 1px dashed var(--
       </div>
     </div>
 
-    <div class="checklist blue">
-      <h3>Report Checklist ✓</h3>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">2–3 screenshots with captions</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Answered all 4 questions</span></div>
-      <div class="ci"><div class="chk" onclick="tog(this)"></div><span class="cl">Downloaded the PDF</span></div>
+    <div class="checklist" data-key="mp-report">
+      <h3>✅ Report Checklist</h3>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">2–3 screenshots with captions</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Answered all 4 questions</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Downloaded the PDF</span></button>
+      <div class="check-count"></div>
     </div>
 
-    <div class="nav-btns">
-      <button class="nav-btn btn-prev" onclick="goTo('task4')">← Task 4</button>
-      <button class="nav-btn btn-next gold" onclick="goTo('submit')">Submit →</button>
+    <div class="nav-buttons">
+      <button class="prev-btn" data-go="task4">← Task 4</button>
+      <button class="next-btn" data-go="submit">Submit →</button>
     </div>
-  </div>
+  </section>
 
-  <!-- ═══ SUBMIT ═══ -->
-  <div id="submit" class="section">
-    <div class="section-banner b-gold">📤 Submit — Upload to Padlet</div>
+  <!-- ===================== SUBMIT ===================== -->
+  <section class="content-section" id="submit" style="--c: var(--gold); --cl: var(--gold-light)">
+    <div class="section-banner">📤 Submit — Upload to Padlet</div>
 
-    <div class="submit-box">
-      <h3 style="font-family:'DM Serif Display',serif;font-weight:400;font-size:1.3rem;text-transform:none;letter-spacing:0;color:var(--ink);margin:0 0 6px;">Upload Three Items</h3>
-      <div class="submit-items">
-        <div class="submit-item"><h4>1. Monoprints</h4><p>Photos of 2–3 prints + materials used</p></div>
-        <div class="submit-item"><h4>2. Digital Design</h4><p>Texture in your Term 2 project</p></div>
-        <div class="submit-item"><h4>3. Progress Report</h4><p>PDF from the report tool</p></div>
+    <div class="padlet-box">
+      <h3>Upload Three Items</h3>
+      <div class="card-grid">
+        <div class="card" style="--cc: var(--teal)"><div class="label">1. Monoprints</div>Photos of 2–3 prints + materials used</div>
+        <div class="card" style="--cc: var(--pink)"><div class="label">2. Digital design</div>Texture in your Term 2 project</div>
+        <div class="card" style="--cc: var(--blue)"><div class="label">3. Progress Report</div>PDF from the report tool</div>
       </div>
-      <a href="https://artslondon.padlet.org/hstokes12/term-2-week-3-th2s3ir6sfec7ukb" target="_blank" class="cta-btn cta-teal">📤 Upload to Padlet →</a>
+      <a class="btn" href="https://artslondon.padlet.org/hstokes12/term-2-week-3-th2s3ir6sfec7ukb" target="_blank" rel="noopener">📤 Upload to Padlet ↗</a>
     </div>
+
+    <div class="checklist" data-key="mp-submit">
+      <h3>✅ Final Checklist</h3>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Uploaded photos of 2–3 prints + materials</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Uploaded digital design</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Uploaded Progress Report PDF</span></button>
+      <div class="check-count"></div>
+    </div>
+
+    <div class="rule"></div>
 
     <h2>What You Learned</h2>
-    <div class="info-box green">
+    <div class="box-note green">
       <ul>
         <li><strong>Monoprints</strong> — oil pastel + objects</li>
         <li><strong>Digitise</strong> — scan and set up in Photoshop</li>
@@ -770,183 +1025,237 @@ footer { text-align: center; padding: 20px 0 10px; border-top: 1px dashed var(--
       </ul>
     </div>
 
-    <div class="nav-btns">
-      <button class="nav-btn btn-prev" onclick="goTo('report')">← Report</button>
-      <button class="nav-btn btn-next" onclick="goTo('quiz')">Quiz →</button>
+    <div class="nav-buttons">
+      <button class="prev-btn" data-go="report">← Report</button>
+      <button class="next-btn" data-go="quiz">Quiz →</button>
     </div>
-  </div>
+  </section>
 
-  <!-- ═══ QUIZ ═══ -->
-  <div id="quiz" class="section">
-    <div class="section-banner b-blue">❓ Quiz — Test Yourself</div>
+  <!-- ===================== QUIZ ===================== -->
+  <section class="content-section" id="quiz" style="--c: var(--ink); --cl: var(--warm-mid)">
+    <div class="section-banner">❓ Quiz — Test Yourself</div>
 
     <h2>1 · Put the Steps in Order</h2>
-    <p style="font-size:0.8rem;color:var(--concrete);">Making a monoprint. Use ▲ ▼ to move steps.</p>
+    <p class="muted">Making a monoprint. Use ▲ ▼ to move steps.</p>
     <ul class="order-list" id="orderList"></ul>
-    <button class="check-btn" onclick="checkOrder()">Check Order</button>
+    <button class="btn" type="button" id="checkOrderBtn" style="--c: var(--pink)">Check Order</button>
     <div class="feedback" id="orderFeedback"></div>
 
     <h2>2 · Multiple Choice</h2>
 
-    <div class="question">
-      <div class="question-text">Which side of the tracing paper faces down?</div>
+    <div class="q">
+      <div class="q-text">Which side of the tracing paper faces down?</div>
       <div class="options">
-        <div class="option" data-correct="false">The blank side</div>
-        <div class="option" data-correct="true">The oil pastel side</div>
-        <div class="option" data-correct="false">It does not matter</div>
-        <div class="option" data-correct="false">The textured side</div>
+        <button class="opt" type="button" data-correct="false">The blank side</button>
+        <button class="opt" type="button" data-correct="true">The oil pastel side</button>
+        <button class="opt" type="button" data-correct="false">It does not matter</button>
+        <button class="opt" type="button" data-correct="false">The textured side</button>
       </div>
     </div>
 
-    <div class="question">
-      <div class="question-text">First adjustment after you scan?</div>
+    <div class="q">
+      <div class="q-text">First adjustment after you scan?</div>
       <div class="options">
-        <div class="option" data-correct="false">Add a layer mask</div>
-        <div class="option" data-correct="false">Delete white areas</div>
-        <div class="option" data-correct="true">Image → Adjustments → Threshold</div>
-        <div class="option" data-correct="false">Blend mode Multiply</div>
+        <button class="opt" type="button" data-correct="false">Add a layer mask</button>
+        <button class="opt" type="button" data-correct="false">Delete white areas</button>
+        <button class="opt" type="button" data-correct="true">Image → Adjustments → Threshold</button>
+        <button class="opt" type="button" data-correct="false">Blend mode Multiply</button>
       </div>
     </div>
 
-    <div class="question">
-      <div class="question-text">Which menu selects all the white at once?</div>
+    <div class="q">
+      <div class="q-text">Which menu selects all the white at once?</div>
       <div class="options">
-        <div class="option" data-correct="false">Filter → Stylize</div>
-        <div class="option" data-correct="true">Select → Similar</div>
-        <div class="option" data-correct="false">Edit → Fill</div>
-        <div class="option" data-correct="false">Layer → Smart Object</div>
+        <button class="opt" type="button" data-correct="false">Filter → Stylize</button>
+        <button class="opt" type="button" data-correct="true">Select → Similar</button>
+        <button class="opt" type="button" data-correct="false">Edit → Fill</button>
+        <button class="opt" type="button" data-correct="false">Layer → Smart Object</button>
       </div>
     </div>
 
-    <div class="question">
-      <div class="question-text">Black brush on a layer mask…</div>
+    <div class="q">
+      <div class="q-text">Black brush on a layer mask…</div>
       <div class="options">
-        <div class="option" data-correct="false">adds colour</div>
-        <div class="option" data-correct="false">adds texture</div>
-        <div class="option" data-correct="false">shows areas</div>
-        <div class="option" data-correct="true">hides areas</div>
+        <button class="opt" type="button" data-correct="false">adds colour</button>
+        <button class="opt" type="button" data-correct="false">adds texture</button>
+        <button class="opt" type="button" data-correct="false">shows areas</button>
+        <button class="opt" type="button" data-correct="true">hides areas</button>
       </div>
     </div>
 
-    <div class="question">
-      <div class="question-text">Best blend mode for black texture on a light background?</div>
+    <div class="q">
+      <div class="q-text">Best blend mode for black texture on a light background?</div>
       <div class="options">
-        <div class="option" data-correct="true">Multiply</div>
-        <div class="option" data-correct="false">Difference</div>
-        <div class="option" data-correct="false">Luminosity</div>
-        <div class="option" data-correct="false">Color</div>
+        <button class="opt" type="button" data-correct="true">Multiply</button>
+        <button class="opt" type="button" data-correct="false">Difference</button>
+        <button class="opt" type="button" data-correct="false">Luminosity</button>
+        <button class="opt" type="button" data-correct="false">Color</button>
       </div>
     </div>
 
-    <div class="question">
-      <div class="question-text">Shortcut to deselect?</div>
+    <div class="q">
+      <div class="q-text">Shortcut to deselect?</div>
       <div class="options">
-        <div class="option" data-correct="false">Cmd/Ctrl + A</div>
-        <div class="option" data-correct="true">Cmd/Ctrl + D</div>
-        <div class="option" data-correct="false">Cmd/Ctrl + H</div>
-        <div class="option" data-correct="false">Cmd/Ctrl + Z</div>
+        <button class="opt" type="button" data-correct="false">Cmd/Ctrl + A</button>
+        <button class="opt" type="button" data-correct="true">Cmd/Ctrl + D</button>
+        <button class="opt" type="button" data-correct="false">Cmd/Ctrl + H</button>
+        <button class="opt" type="button" data-correct="false">Cmd/Ctrl + Z</button>
       </div>
     </div>
 
-    <button class="check-btn" onclick="checkQuiz()">Check Answers</button>
+    <button class="btn" type="button" id="checkQuizBtn" style="--c: var(--pink)">Check Answers</button>
     <div class="feedback" id="quizFeedback"></div>
 
-    <div class="nav-btns">
-      <button class="nav-btn btn-prev" onclick="goTo('submit')">← Submit</button>
-      <button class="nav-btn btn-next" onclick="goTo('overview')">↩ Back to Start</button>
+    <div class="nav-buttons">
+      <button class="prev-btn" data-go="submit">← Submit</button>
+      <button class="next-btn" data-go="overview">↺ Back to Start</button>
     </div>
-  </div>
+  </section>
 
+  <footer>© Heidi Stokes · UAL · Digital Skills · Monoprint: Handmade to Digital · IELS Level 5</footer>
 </div>
 
-<footer>© Heidi Stokes · UAL · Digital Skills · Monoprint: Handmade to Digital · IELS Level 5</footer>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+  <img id="lightboxImg" alt="">
+  <div class="lb-cap" id="lbCap"></div>
+</div>
 
 <script>
-const sections = ['overview','task1','task2','task3','task4','report','submit','quiz'];
-let current = 'overview';
+// ---- Sections, tabs and progress bar ----
+var sections = ['overview', 'task1', 'task2', 'task3', 'task4', 'report', 'submit', 'quiz'];
 
-function goTo(id) {
-  document.getElementById(current).classList.remove('active');
-  document.querySelector(`[data-sec="${current}"]`).classList.remove('active');
-  current = id;
-  document.getElementById(id).classList.add('active');
-  document.querySelector(`[data-sec="${id}"]`).classList.add('active');
-  document.getElementById('progressBar').style.width = ((sections.indexOf(id) + 1) / sections.length * 100) + '%';
+function goToSection(id) {
+  document.querySelectorAll('.content-section').forEach(function (s) {
+    s.classList.toggle('active', s.id === id);
+  });
+  document.querySelectorAll('.nav-block').forEach(function (b) {
+    b.classList.toggle('active', b.dataset.section === id);
+  });
+  document.getElementById('progressFill').style.width = ((sections.indexOf(id) + 1) / sections.length * 100) + '%';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-document.querySelectorAll('.nav-block').forEach(b => b.addEventListener('click', () => goTo(b.dataset.sec)));
+document.querySelectorAll('.nav-block').forEach(function (b) {
+  b.addEventListener('click', function () { goToSection(b.dataset.section); });
+});
+document.querySelectorAll('[data-go]').forEach(function (b) {
+  b.addEventListener('click', function () { goToSection(b.dataset.go); });
+});
 
-function tog(el) { el.classList.toggle('checked'); }
+// ---- Accordions ----
+document.querySelectorAll('.acc-head').forEach(function (head) {
+  head.addEventListener('click', function () { head.parentElement.classList.toggle('open'); });
+});
 
-function toggleStep(header) {
-  const body = header.nextElementSibling;
-  const open = body.classList.toggle('open');
-  header.querySelector('.step-toggle').textContent = open ? '▼' : '▶';
-}
+// ---- Missing images ----
+document.querySelectorAll('.thumb img').forEach(function (img) {
+  function markMissing() { img.closest('.thumb').classList.add('missing'); }
+  if (img.complete && img.naturalWidth === 0) markMissing();
+  img.addEventListener('error', markMissing);
+});
 
-function openLB(src, cap) {
-  document.getElementById('lb-img').src = src;
-  document.getElementById('lb-cap').textContent = cap;
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeLB() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+// ---- Lightbox ----
+var lightbox = document.getElementById('lightbox');
+var lightboxImg = document.getElementById('lightboxImg');
+var lbCap = document.getElementById('lbCap');
+document.querySelectorAll('.thumb').forEach(function (thumb) {
+  thumb.addEventListener('click', function () {
+    if (thumb.classList.contains('missing')) return;
+    lightboxImg.src = thumb.dataset.src;
+    lightboxImg.alt = thumb.querySelector('img').alt;
+    lbCap.textContent = thumb.dataset.cap || '';
+    lightbox.classList.add('open');
+  });
+});
+function closeLightbox() { lightbox.classList.remove('open'); }
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', function (e) { if (e.target !== lightboxImg) closeLightbox(); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLightbox(); });
 
-/* ORDER QUIZ — buttons work on phones and laptops */
-const correctOrder = ['Colour tracing paper with oil pastel','Objects under the paper — pastel side down','Rub hard with a pencil','Lift the paper to see the print'];
-let order = [correctOrder[2], correctOrder[0], correctOrder[3], correctOrder[1]];
+// ---- Checklists (saved in this browser) ----
+document.querySelectorAll('.checklist').forEach(function (list) {
+  var key = list.dataset.key;
+  var items = list.querySelectorAll('.check-item');
+  var countEl = list.querySelector('.check-count');
+  function update() {
+    countEl.textContent = list.querySelectorAll('.check-item.done').length + ' / ' + items.length + ' done';
+  }
+  try {
+    var saved = JSON.parse(localStorage.getItem(key) || '[]');
+    items.forEach(function (item, i) { if (saved[i]) item.classList.add('done'); });
+  } catch (e) {}
+  items.forEach(function (item) {
+    item.addEventListener('click', function () {
+      item.classList.toggle('done');
+      var states = Array.prototype.map.call(items, function (i) { return i.classList.contains('done'); });
+      try { localStorage.setItem(key, JSON.stringify(states)); } catch (e) {}
+      update();
+    });
+  });
+  update();
+});
+
+// ---- Order quiz (▲ ▼ buttons work on phones and laptops) ----
+var correctOrder = ['Colour tracing paper with oil pastel', 'Objects under the paper — pastel side down', 'Rub hard with a pencil', 'Lift the paper to see the print'];
+var order = [correctOrder[2], correctOrder[0], correctOrder[3], correctOrder[1]];
+
 function renderOrder() {
-  const ul = document.getElementById('orderList');
+  var ul = document.getElementById('orderList');
   ul.innerHTML = '';
-  order.forEach((t, i) => {
-    const li = document.createElement('li');
+  order.forEach(function (text, i) {
+    var li = document.createElement('li');
     li.className = 'order-item';
-    li.innerHTML = `<span>${t}</span><button class="order-btn" ${i===0?'disabled':''}>▲</button><button class="order-btn" ${i===order.length-1?'disabled':''}>▼</button>`;
-    const [up, down] = li.querySelectorAll('button');
-    up.onclick = () => { [order[i-1], order[i]] = [order[i], order[i-1]]; renderOrder(); };
-    down.onclick = () => { [order[i+1], order[i]] = [order[i], order[i+1]]; renderOrder(); };
+    var span = document.createElement('span');
+    span.textContent = text;
+    var up = document.createElement('button');
+    up.className = 'order-btn'; up.type = 'button'; up.textContent = '▲'; up.disabled = i === 0;
+    var down = document.createElement('button');
+    down.className = 'order-btn'; down.type = 'button'; down.textContent = '▼'; down.disabled = i === order.length - 1;
+    up.addEventListener('click', function () { var t = order[i - 1]; order[i - 1] = order[i]; order[i] = t; renderOrder(); });
+    down.addEventListener('click', function () { var t = order[i + 1]; order[i + 1] = order[i]; order[i] = t; renderOrder(); });
+    li.appendChild(span); li.appendChild(up); li.appendChild(down);
     ul.appendChild(li);
   });
   document.getElementById('orderFeedback').className = 'feedback';
 }
-function checkOrder() {
-  let ok = true;
-  document.querySelectorAll('.order-item').forEach((li, i) => {
-    const right = order[i] === correctOrder[i];
-    li.classList.add(right ? 'correct' : 'incorrect');
+document.getElementById('checkOrderBtn').addEventListener('click', function () {
+  var ok = true;
+  document.querySelectorAll('.order-item').forEach(function (li, i) {
+    var right = order[i] === correctOrder[i];
+    li.classList.add(right ? 'right' : 'wrong');
     if (!right) ok = false;
   });
-  const fb = document.getElementById('orderFeedback');
+  var fb = document.getElementById('orderFeedback');
   fb.textContent = ok ? '✓ Correct!' : 'Not quite — try again.';
   fb.className = 'feedback ' + (ok ? 'ok' : 'no');
-}
+});
 renderOrder();
 
-/* MULTIPLE CHOICE */
-document.querySelectorAll('.option').forEach(opt => opt.addEventListener('click', () => {
-  opt.closest('.question').querySelectorAll('.option').forEach(o => o.classList.remove('selected','correct','incorrect'));
-  opt.classList.add('selected');
-}));
-function checkQuiz() {
-  const qs = document.querySelectorAll('.question');
-  let score = 0;
-  qs.forEach(q => {
-    const sel = q.querySelector('.option.selected');
+// ---- Multiple choice ----
+document.querySelectorAll('.opt').forEach(function (opt) {
+  opt.addEventListener('click', function () {
+    opt.closest('.q').querySelectorAll('.opt').forEach(function (o) { o.classList.remove('selected', 'right', 'wrong'); });
+    opt.classList.add('selected');
+  });
+});
+document.getElementById('checkQuizBtn').addEventListener('click', function () {
+  var qs = document.querySelectorAll('.q');
+  var score = 0;
+  qs.forEach(function (q) {
+    var sel = q.querySelector('.opt.selected');
     if (!sel) return;
-    if (sel.dataset.correct === 'true') { sel.classList.add('correct'); score++; }
+    if (sel.dataset.correct === 'true') { sel.classList.add('right'); score++; }
     else {
-      sel.classList.add('incorrect');
-      q.querySelector('.option[data-correct="true"]').classList.add('correct');
+      sel.classList.add('wrong');
+      q.querySelector('.opt[data-correct="true"]').classList.add('right');
     }
   });
-  const fb = document.getElementById('quizFeedback');
-  fb.textContent = score === qs.length ? `✓ Perfect — ${score}/${qs.length}!` : `${score}/${qs.length} — check the tasks and try again.`;
+  var fb = document.getElementById('quizFeedback');
+  fb.textContent = score === qs.length ? '✓ Perfect — ' + score + '/' + qs.length + '!' : score + '/' + qs.length + ' — check the tasks and try again.';
   fb.className = 'feedback ' + (score === qs.length ? 'ok' : 'no');
-}
+});
+
+goToSection('overview');
 </script>
 </body>
 </html>
