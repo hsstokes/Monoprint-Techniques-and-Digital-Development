@@ -576,6 +576,17 @@ footer {
 .feedback { margin-top: 10px; padding: 10px 14px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 0.85rem; display: none; }
 .feedback.ok { display: block; background: var(--green-light); color: var(--green); }
 .feedback.no { display: block; background: #fbe7e5; color: #b3261e; }
+
+/* ---------- Stuck? troubleshooting (sweep Nov 2026) ---------- */
+.stuck { background: #fff; border: 2px solid var(--ink, #1a1a1a); margin: 20px 0; }
+.stuck .stuck-head { background: var(--ink, #1a1a1a); color: #fff; font-family: 'Space Mono', monospace; font-weight: 700; padding: 10px 16px; }
+.stuck .row { display: grid; grid-template-columns: 1fr 1.4fr; border-top: 1px dashed var(--warm-mid, #d4cfc8); }
+.stuck .row:first-of-type { border-top: 0; }
+.stuck .prob, .stuck .fix { padding: 10px 16px; font-size: 0.92rem; line-height: 1.6; }
+.stuck .prob { font-weight: 600; background: var(--paper, #f2ede8); }
+.stuck .prob::before { content: "✗ "; color: #c62828; }
+.stuck .fix::before { content: "→ "; color: var(--teal, #0a7a7a); font-weight: 700; }
+@media (max-width: 600px) { .stuck .row { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -699,12 +710,18 @@ footer {
 
     <div class="box-note gold"><strong>Keep your original.</strong> Work on the copy.</div>
 
+    <div class="stuck">
+      <div class="stuck-head">🆘 Stuck? Try this</div>
+      <div class="row"><div class="prob">My scan looks blurry.</div><div class="fix">Scan again at <strong>300 dpi</strong> or higher.</div></div>
+      <div class="row"><div class="prob">Threshold is greyed out (after Place Embedded).</div><div class="fix"><strong>Place Embedded</strong> makes a Smart Object. Right-click the layer › <strong>Rasterize Layer</strong>.</div></div>
+    </div>
+
     <div class="checklist" data-key="mp-task1">
       <h3>✅ Task 1 Checklist</h3>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Scanned at 300 dpi</span></button>
       <button class="check-item" type="button"><span class="box"></span><span class="text">A3 document · scan placed · layer duplicated</span></button>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Saved as PSD</span></button>
-      <button class="check-item" type="button"><span class="box"></span><span class="text">Screenshot taken</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Process JPEG exported</span></button>
       <div class="check-count"></div>
     </div>
 
@@ -784,12 +801,19 @@ footer {
       </div>
     </div>
 
+    <div class="stuck">
+      <div class="stuck-head">🆘 Stuck? Try this</div>
+      <div class="row"><div class="prob">Select › Similar selects the black too.</div><div class="fix">Apply Threshold first, so the white is pure white.</div></div>
+      <div class="row"><div class="prob">A “Fill” window opens when I press Delete.</div><div class="fix">You are on a locked <strong>Background</strong> layer. Click <strong>Cancel</strong>. Double-click the Background layer, click <strong>OK</strong>, try again.</div></div>
+      <div class="row"><div class="prob">Nothing happens / the wrong part changes.</div><div class="fix">Look at the Layers panel. Click the correct layer first. Undo: <span class="key">Cmd/Ctrl</span>+<span class="key">Z</span></div></div>
+    </div>
+
     <div class="checklist" data-key="mp-task2">
       <h3>✅ Task 2 Checklist</h3>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Applied Threshold</span></button>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Selected white with Select → Similar</span></button>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Deleted the white</span></button>
-      <button class="check-item" type="button"><span class="box"></span><span class="text">Screenshot taken</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Process JPEG exported</span></button>
       <div class="check-count"></div>
     </div>
 
@@ -852,12 +876,18 @@ footer {
       </div>
     </div>
 
+    <div class="stuck">
+      <div class="stuck-head">🆘 Stuck? Try this</div>
+      <div class="row"><div class="prob">Black paint covers my image.</div><div class="fix">You painted on the picture, not the mask. Undo. Click the <strong>white mask thumbnail</strong> first.</div></div>
+      <div class="row"><div class="prob">My black texture won’t change colour.</div><div class="fix">Move the <strong>Lightness</strong> slider up. Or use the Quick colour tip.</div></div>
+    </div>
+
     <div class="checklist" data-key="mp-task3">
       <h3>✅ Task 3 Checklist</h3>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Added a layer mask · hid areas with black</span></button>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Tried 2+ blend modes · changed opacity</span></button>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Added colour</span></button>
-      <button class="check-item" type="button"><span class="box"></span><span class="text">Screenshot taken</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Process JPEG exported</span></button>
       <div class="check-count"></div>
     </div>
 
@@ -907,12 +937,19 @@ footer {
     </div>
     <div class="box-note"><strong>Why it works:</strong> handmade texture + clean digital edit + links to the project theme.</div>
 
+    <div class="stuck">
+      <div class="stuck-head">🆘 Stuck? Try this</div>
+      <div class="row"><div class="prob">My texture is too big.</div><div class="fix">Free Transform: <span class="key">Cmd/Ctrl</span>+<span class="key">T</span>. Drag a corner. <span class="key">Enter</span>.</div></div>
+      <div class="row"><div class="prob">I can’t drag the layer into my project.</div><div class="fix">Copy <span class="key">Cmd/Ctrl</span>+<span class="key">C</span> and paste <span class="key">Cmd/Ctrl</span>+<span class="key">V</span> instead.</div></div>
+      <div class="row"><div class="prob">I forgot to export a JPEG during the task.</div><div class="fix">Open <strong>Window › History</strong>. Click an earlier step. Export your JPEG. Click the last step to return. <em>Do not edit while on an earlier step.</em></div></div>
+    </div>
+
     <div class="checklist" data-key="mp-task4">
       <h3>✅ Task 4 Checklist</h3>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Texture placed in my project</span></button>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Refined with blend / mask / opacity</span></button>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Harvard references added</span></button>
-      <button class="check-item" type="button"><span class="box"></span><span class="text">Saved PSD · exported JPEG · screenshot</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">Saved PSD · exported JPEG</span></button>
       <div class="check-count"></div>
     </div>
 
@@ -936,11 +973,12 @@ footer {
         </div>
       </div>
       <div class="acc">
-        <button class="acc-head" type="button"><span class="acc-num">2</span><span class="acc-title">Name + screenshots</span><span class="acc-arrow">›</span></button>
+        <button class="acc-head" type="button"><span class="acc-num">2</span><span class="acc-title">Name + JPEGs</span><span class="acc-arrow">›</span></button>
         <div class="acc-body">
           <ul>
+            <li>Export each one: <strong>File › Export › Export As…</strong> › Format: <strong>JPG</strong></li>
             <li>Type your full name</li>
-            <li>Upload <strong>2–3 screenshots</strong> — print, Threshold, final design</li>
+            <li>Upload <strong>2–3 exported JPEGs</strong> — print, Threshold, final design</li>
             <li>Add a short caption to each</li>
           </ul>
         </div>
@@ -977,7 +1015,7 @@ footer {
 
     <div class="checklist" data-key="mp-report">
       <h3>✅ Report Checklist</h3>
-      <button class="check-item" type="button"><span class="box"></span><span class="text">2–3 screenshots with captions</span></button>
+      <button class="check-item" type="button"><span class="box"></span><span class="text">2–3 JPEGs with captions</span></button>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Answered all 4 questions</span></button>
       <button class="check-item" type="button"><span class="box"></span><span class="text">Downloaded the PDF</span></button>
       <div class="check-count"></div>
