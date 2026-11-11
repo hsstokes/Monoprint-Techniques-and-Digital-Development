@@ -587,6 +587,9 @@ footer {
 .stuck .prob::before { content: "✗ "; color: #c62828; }
 .stuck .fix::before { content: "→ "; color: var(--teal, #0a7a7a); font-weight: 700; }
 @media (max-width: 600px) { .stuck .row { grid-template-columns: 1fr; } }
+
+/* screenshot slots: hidden until the file exists */
+.shot { display:block; max-width:100%; width:520px; height:auto; border:2px solid #1a1a1a; margin:10px 0; cursor:zoom-in; }
 </style>
 </head>
 <body>
@@ -860,7 +863,7 @@ footer {
             <div class="chip"><b>Soft Light</b><span>Gentle contrast</span></div>
           </div>
           <p style="margin-top: 10px;">Use <strong>Opacity</strong> to make it softer.</p>
-        </div>
+        <img class="shot" src="https://hsstokes.github.io/Creating-Stencils---Digital-Brushes/shots/blend-modes-menu.png" alt="Blend mode menu in the Layers panel" loading="lazy" onerror="this.remove()" onclick="window.open(this.src)"></div>
       </div>
 
       <div class="acc">
@@ -872,7 +875,7 @@ footer {
             <li>Move the sliders</li>
           </ol>
           <div class="tip-box"><strong>💡 Quick colour</strong><ul><li>Put a colour fill layer underneath</li><li>Set the texture to a blend mode</li></ul></div>
-        </div>
+        <img class="shot" src="shots/hue-saturation-colorize.png" alt="Hue/Saturation with Colorize ticked" loading="lazy" onerror="this.remove()" onclick="window.open(this.src)"></div>
       </div>
     </div>
 
@@ -917,7 +920,7 @@ footer {
       </div>
       <div class="acc">
         <button class="acc-head" type="button"><span class="acc-num">2</span><span class="acc-title">Position &amp; Scale</span><span class="acc-arrow">›</span></button>
-        <div class="acc-body"><ul><li><span class="key">Cmd/Ctrl</span>+<span class="key">T</span></li><li>Drag corners (<span class="key">Shift</span> keeps the shape)</li><li><span class="key">Enter</span> to confirm</li></ul></div>
+        <div class="acc-body"><ul><li><span class="key">Cmd/Ctrl</span>+<span class="key">T</span></li><li>Drag corners (<span class="key">Shift</span> keeps the shape)</li><li><span class="key">Enter</span> to confirm</li></ul><img class="shot" src="shots/free-transform.png" alt="Free Transform handles" loading="lazy" onerror="this.remove()" onclick="window.open(this.src)"></div>
       </div>
       <div class="acc">
         <button class="acc-head" type="button"><span class="acc-num">3</span><span class="acc-title">Refine</span><span class="acc-arrow">›</span></button>
